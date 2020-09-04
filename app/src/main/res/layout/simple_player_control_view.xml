@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="172dp"
+    android:background="#CCCCCC">
+
+    <ImageView
+        android:id="@+id/video_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="9dp">
+
+        <RelativeLayout
+            android:id="@+id/play_video_rl"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="9dp">
+
+<!--            <ImageView-->
+<!--                android:id="@+id/exo_play"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:src="@drawable/exo_icon_play" />-->
+
+
+<!--            <ImageView-->
+<!--                android:id="@+id/exo_pause"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:src="@drawable/exo_icon_pause" />-->
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/video_start_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/play_video_rl"
+            android:text="00:00"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp" />
+
+        <!--        <com.google.android.exoplayer2.ui.DefaultTimeBar-->
+        <!--            android:id="@+id/exo_progress"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_centerVertical="true"-->
+        <!--            android:layout_marginLeft="@dimen/dp_10"-->
+        <!--            android:layout_marginRight="@dimen/dp_10"-->
+        <!--            android:layout_toLeftOf="@id/video_end_time_tv"-->
+        <!--            android:layout_toRightOf="@id/video_start_time_tv"-->
+        <!--            app:buffered_color="#F17478"-->
+        <!--            app:played_color="#BB1B21"-->
+        <!--            app:unplayed_color="#A4A4A4" />-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/video_end_time_tv"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginRight="9dp"-->
+<!--            android:layout_toLeftOf="@id/video_control_iv"-->
+<!--            android:text="03:00"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:textSize="11sp" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/video_control_iv"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:src="@drawable/video_enlarge" />-->
+    </RelativeLayout>
+
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
