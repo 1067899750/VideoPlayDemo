@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.VideoAndMusicActivity">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+
+        android:background="@null"
+        app:tabGravity="center"
+        app:tabIndicatorColor="#C10FAF"
+        app:tabIndicatorFullWidth="false"
+
+        app:tabIndicatorHeight="2dp"
+        app:tabMode="scrollable"
+        app:tabPadding="5dp"
+        app:tabPaddingEnd="10dp"
+        app:tabPaddingStart="10dp"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="#ED0909"
+
+        app:tabTextAppearance="@style/TabLayoutTextSize"
+        app:tabTextColor="#000000" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/content_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tab_layout" />
+</RelativeLayout>
