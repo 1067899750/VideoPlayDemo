@@ -109,6 +109,7 @@ public class PlatVideoStd extends Jzvd {
         mRetryLayout = findViewById(R.id.retry_layout);
         mRetryStart = findViewById(R.id.retry_start);
 
+        titleTextView.setOnClickListener(this);
         thumbImageView.setOnClickListener(this);
         backButton.setOnClickListener(this);
         tinyBackImageView.setOnClickListener(this);
@@ -251,7 +252,7 @@ public class PlatVideoStd extends Jzvd {
             }
         } else if (i == R.id.surface_container) {
             startDismissControlViewTimer();
-        } else if (i == R.id.back) {
+        } else if (i == R.id.back || i == R.id.title) {
             backPress();
         } else if (i == R.id.back_tiny) {
             clearFloatScreen();
