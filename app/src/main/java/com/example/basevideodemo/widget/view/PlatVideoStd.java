@@ -26,6 +26,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.basevideodemo.R;
 
 import java.lang.reflect.Constructor;
@@ -308,12 +309,23 @@ public class PlatVideoStd extends Jzvd {
             }
             addTextureView();
             onStatePreparing();
-        } else if (i == R.id.retry_start){
+        } else if (i == R.id.retry_start) {
             if (jzDataSource == null || jzDataSource.urlsMap.isEmpty() || jzDataSource.getCurrentUrl() == null) {
                 Toast.makeText(getContext(), getResources().getString(R.string.no_url), Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (state == STATE_AUTO_COMPLETE) {
+            if (state == STATE_NORMAL) {
+                mRetryStart.setVisibility(GONE);
+                if (!jzDataSource.getCurrentUrl().toString().startsWith("file") &&
+                        !jzDataSource.getCurrentUrl().toString().startsWith("/") &&
+                        !JZUtils.isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED) {
+                    //使用移动网络播放
+                    showWifiDialog();
+                    return;
+                }
+                //启动视频播放
+                startVideo();
+            } else if (state == STATE_AUTO_COMPLETE) {
                 startVideo();
             }
         }
@@ -628,7 +640,8 @@ public class PlatVideoStd extends Jzvd {
 
     }
 
-    public void setAllControlsVisiblity(int topCon, int bottomCon, int startBtn, int loadingPro,
+    public void setAllControlsVisiblity(int topCon, int bottomCon, int startBtn,
+                                        int loadingPro,
                                         int thumbImg, int bottomPro, int retryLayout) {
         topContainer.setVisibility(topCon);
         bottomContainer.setVisibility(bottomCon);
@@ -647,23 +660,27 @@ public class PlatVideoStd extends Jzvd {
         } else if (state == STATE_ERROR) {
             replayTextView.setVisibility(GONE);
             mRetryStart.setVisibility(GONE);
+            bottomContainer.setVisibility(VISIBLE);
         } else if (state == STATE_AUTO_COMPLETE) {
-            startButton.setImageResource(R.drawable.jz_click_replay_selector);
             replayTextView.setVisibility(VISIBLE);
+            mRetryStart.setImageResource(R.drawable.jz_click_replay_selector);
+            mRetryStart.setVisibility(VISIBLE);
+        } else if (state == STATE_NORMAL) {
+            mRetryStart.setImageResource(R.drawable.jz_click_play_selector);
+            startButton.setImageResource(R.drawable.jz_click_play_selector);
+            replayTextView.setVisibility(GONE);
             mRetryStart.setVisibility(VISIBLE);
         } else {
-            bottomContainer.setVisibility(VISIBLE);
             mRetryStart.setVisibility(GONE);
             startButton.setImageResource(R.drawable.jz_click_play_selector);
             replayTextView.setVisibility(GONE);
-
-
         }
     }
 
 
     @Override
-    public void showProgressDialog(float deltaX, String seekTime, long seekTimePosition, String totalTime, long totalTimeDuration) {
+    public void showProgressDialog(float deltaX, String seekTime, long seekTimePosition, String
+            totalTime, long totalTimeDuration) {
         super.showProgressDialog(deltaX, seekTime, seekTimePosition, totalTime, totalTimeDuration);
         if (mProgressDialog == null) {
             View localView = LayoutInflater.from(getContext()).inflate(R.layout.jz_dialog_progress, null);
