@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.model.BaseVideoBean;
+import com.example.basevideodemo.widget.view.MyJzvdStd;
+import com.example.basevideodemo.widget.view.PlatVideoStd;
 
 import cn.jzvd.Jzvd;
 import cn.jzvd.JzvdStd;
@@ -27,7 +29,7 @@ import cn.jzvd.JzvdStd;
  */
 public class VideoFragment extends Fragment {
     private Context mContext;
-    private JzvdStd mPlayVideo;
+    private PlatVideoStd mPlayVideo;
 
     public VideoFragment() {
         // Required empty public constructor
@@ -74,13 +76,11 @@ public class VideoFragment extends Fragment {
         BaseVideoBean bean = new BaseVideoBean();
         bean.setId("212121");
         bean.setTitle("饺子快长大");
-        bean.setVideoUrl("http://jzvd.nathen.cn/342a5f7ef6124a4a8faf00e738b8bee4/cf6d9db0bd4d41f59d09ea0a81e918fd-5287d2089db37e62345123a1be272f8b.mp4");
-        bean.setVideoPic("http://jzvd-pic.nathen.cn/jzvd-pic/1bb2ebbe-140d-4e2e-abd2-9e7e564f71ac.png");
+        bean.setVideoUrl("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4");
+        bean.setVideoPic("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640");
 
-        mPlayVideo.setUp(
-                "http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4"
-                , "饺子闭眼睛");
-        Glide.with(mContext).load("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640").into(mPlayVideo.thumbImageView);
+        mPlayVideo.setUp(bean.getVideoUrl(), bean.getTitle());
+        Glide.with(mContext).load(bean.getVideoPic()).into(mPlayVideo.thumbImageView);
 
     }
 
