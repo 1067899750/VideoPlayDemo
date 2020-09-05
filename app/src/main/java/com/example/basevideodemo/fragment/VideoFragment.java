@@ -102,10 +102,12 @@ public class VideoFragment extends Fragment {
      * 用于返回是否需要实现监听
      */
     public boolean onBackPressed() {
-        if (mPlayVideo.screen == PlatVideoStd.SCREEN_FULLSCREEN){
-            //推出全屏
-            PlatVideoStd.backPress();
-            return true;
+        if (mPlayVideo != null) {
+            if (mPlayVideo.screen == PlatVideoStd.SCREEN_FULLSCREEN) {
+                //推出全屏
+                PlatVideoStd.backPress();
+                return true;
+            }
         }
         return false;
     }
