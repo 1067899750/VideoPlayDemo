@@ -42,8 +42,8 @@
 
             <ImageView
                 android:id="@+id/start"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:src="@drawable/jz_click_play_selector" />
         </LinearLayout>
 
@@ -201,11 +201,20 @@
         android:visibility="invisible" />
 
 
+    <ImageView
+        android:id="@+id/retry_start"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:src="@drawable/jz_click_replay_selector" />
+
+
     <TextView
         android:id="@+id/replay_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loading"
+        android:layout_below="@+id/retry_start"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6dp"
         android:text="@string/replay"

@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,12 +28,15 @@ import android.widget.Toast;
 
 import com.example.basevideodemo.R;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.jzvd.JZDataSource;
+import cn.jzvd.JZMediaInterface;
 import cn.jzvd.JZUtils;
 import cn.jzvd.Jzvd;
 import cn.jzvd.JzvdStd;
@@ -74,6 +79,7 @@ public class PlatVideoStd extends Jzvd {
     protected Dialog mBrightnessDialog;
     protected ProgressBar mDialogBrightnessProgressBar;
     protected TextView mDialogBrightnessTextView;
+    private ImageView mRetryStart;
 
 
     public PlatVideoStd(Context context) {
@@ -100,12 +106,14 @@ public class PlatVideoStd extends Jzvd {
         clarity = findViewById(R.id.clarity);
         mRetryBtn = findViewById(R.id.retry_btn);
         mRetryLayout = findViewById(R.id.retry_layout);
+        mRetryStart = findViewById(R.id.retry_start);
 
         thumbImageView.setOnClickListener(this);
         backButton.setOnClickListener(this);
         tinyBackImageView.setOnClickListener(this);
         clarity.setOnClickListener(this);
         mRetryBtn.setOnClickListener(this);
+        mRetryStart.setOnClickListener(this);
     }
 
     @Override
@@ -171,7 +179,6 @@ public class PlatVideoStd extends Jzvd {
     @Override
     public void changeUrl(int urlMapIndex, long seekToInAdvance) {
         super.changeUrl(urlMapIndex, seekToInAdvance);
-        startButton.setVisibility(INVISIBLE);
         replayTextView.setVisibility(View.GONE);
         mRetryLayout.setVisibility(View.GONE);
     }
@@ -180,7 +187,6 @@ public class PlatVideoStd extends Jzvd {
     public void changeUrl(JZDataSource jzDataSource, long seekToInAdvance) {
         super.changeUrl(jzDataSource, seekToInAdvance);
         titleTextView.setText(jzDataSource.title);
-        startButton.setVisibility(INVISIBLE);
         replayTextView.setVisibility(View.GONE);
         mRetryLayout.setVisibility(View.GONE);
     }
@@ -225,6 +231,7 @@ public class PlatVideoStd extends Jzvd {
         int i = v.getId();
         if (i == R.id.thumb) {
             if (jzDataSource == null || jzDataSource.urlsMap.isEmpty() || jzDataSource.getCurrentUrl() == null) {
+                //播放地址无效
                 Toast.makeText(getContext(), getResources().getString(R.string.no_url), Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -232,9 +239,11 @@ public class PlatVideoStd extends Jzvd {
                 if (!jzDataSource.getCurrentUrl().toString().startsWith("file") &&
                         !jzDataSource.getCurrentUrl().toString().startsWith("/") &&
                         !JZUtils.isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED) {
+                    //使用移动网络播放
                     showWifiDialog();
                     return;
                 }
+                //启动视频播放
                 startVideo();
             } else if (state == STATE_AUTO_COMPLETE) {
                 onClickUiToggle();
@@ -286,6 +295,7 @@ public class PlatVideoStd extends Jzvd {
             int offsetY = clarity.getMeasuredHeight() / 3;
             clarityPopWindow.update(clarity, -offsetX, -offsetY, Math.round(layout.getMeasuredWidth() * 2), layout.getMeasuredHeight());
         } else if (i == R.id.retry_btn) {
+            //点击重试
             if (jzDataSource.urlsMap.isEmpty() || jzDataSource.getCurrentUrl() == null) {
                 Toast.makeText(getContext(), getResources().getString(R.string.no_url), Toast.LENGTH_SHORT).show();
                 return;
@@ -298,6 +308,14 @@ public class PlatVideoStd extends Jzvd {
             }
             addTextureView();
             onStatePreparing();
+        } else if (i == R.id.retry_start){
+            if (jzDataSource == null || jzDataSource.urlsMap.isEmpty() || jzDataSource.getCurrentUrl() == null) {
+                Toast.makeText(getContext(), getResources().getString(R.string.no_url), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (state == STATE_AUTO_COMPLETE) {
+                startVideo();
+            }
         }
     }
 
@@ -307,7 +325,7 @@ public class PlatVideoStd extends Jzvd {
         fullscreenButton.setImageResource(R.drawable.jz_enlarge);
         backButton.setVisibility(View.GONE);
         tinyBackImageView.setVisibility(View.INVISIBLE);
-        changeStartButtonSize((int) getResources().getDimension(R.dimen.jz_start_button_w_h_normal));
+        changeStartButtonSize((int) getResources().getDimension(R.dimen.start_button_w_h_normal));
         batteryTimeLayout.setVisibility(View.GONE);
         clarity.setVisibility(View.GONE);
     }
@@ -326,7 +344,7 @@ public class PlatVideoStd extends Jzvd {
             clarity.setText(jzDataSource.getCurrentKey().toString());
             clarity.setVisibility(View.VISIBLE);
         }
-        changeStartButtonSize((int) getResources().getDimension(R.dimen.jz_start_button_w_h_fullscreen));
+        changeStartButtonSize((int) getResources().getDimension(R.dimen.start_button_w_h_normal));
         setSystemTimeAndBattery();
     }
 
@@ -614,7 +632,7 @@ public class PlatVideoStd extends Jzvd {
                                         int thumbImg, int bottomPro, int retryLayout) {
         topContainer.setVisibility(topCon);
         bottomContainer.setVisibility(bottomCon);
-        startButton.setVisibility(startBtn);
+//        startButton.setVisibility(startBtn);
         loadingProgressBar.setVisibility(loadingPro);
         thumbImageView.setVisibility(thumbImg);
         bottomProgressBar.setVisibility(bottomPro);
@@ -623,21 +641,26 @@ public class PlatVideoStd extends Jzvd {
 
     public void updateStartImage() {
         if (state == STATE_PLAYING) {
-            startButton.setVisibility(VISIBLE);
             startButton.setImageResource(R.drawable.jz_click_pause_selector);
             replayTextView.setVisibility(GONE);
+            mRetryStart.setVisibility(GONE);
         } else if (state == STATE_ERROR) {
-            startButton.setVisibility(INVISIBLE);
             replayTextView.setVisibility(GONE);
+            mRetryStart.setVisibility(GONE);
         } else if (state == STATE_AUTO_COMPLETE) {
-            startButton.setVisibility(VISIBLE);
             startButton.setImageResource(R.drawable.jz_click_replay_selector);
             replayTextView.setVisibility(VISIBLE);
+            mRetryStart.setVisibility(VISIBLE);
         } else {
+            bottomContainer.setVisibility(VISIBLE);
+            mRetryStart.setVisibility(GONE);
             startButton.setImageResource(R.drawable.jz_click_play_selector);
             replayTextView.setVisibility(GONE);
+
+
         }
     }
+
 
     @Override
     public void showProgressDialog(float deltaX, String seekTime, long seekTimePosition, String totalTime, long totalTimeDuration) {
@@ -792,7 +815,6 @@ public class PlatVideoStd extends Jzvd {
             post(() -> {
                 bottomContainer.setVisibility(View.INVISIBLE);
                 topContainer.setVisibility(View.INVISIBLE);
-                startButton.setVisibility(View.INVISIBLE);
                 if (clarityPopWindow != null) {
                     clarityPopWindow.dismiss();
                 }
