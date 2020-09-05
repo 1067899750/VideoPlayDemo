@@ -389,6 +389,25 @@ public class PlatVideoStd extends Jzvd {
         builder.create().show();
     }
 
+    /**
+     * 因为框架中有 bug 所以重重写
+     */
+    @Override
+    public void clearFloatScreen() {
+        JZUtils.showStatusBar(getContext());
+        JZUtils.setRequestedOrientation(getContext(), NORMAL_ORIENTATION);
+        JZUtils.showSystemUI(getContext());
+
+        ViewGroup vg = (ViewGroup) (JZUtils.scanForActivity(getContext())).getWindow().getDecorView();
+        vg.removeView(this);
+        if (mediaInterface != null) {
+            mediaInterface.release();
+        }
+        CURRENT_JZVD = null;
+        mRetryStart.setVisibility(VISIBLE);
+    }
+
+
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         super.onStartTrackingTouch(seekBar);
