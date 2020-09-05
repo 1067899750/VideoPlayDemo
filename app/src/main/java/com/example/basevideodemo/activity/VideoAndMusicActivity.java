@@ -1,6 +1,7 @@
 package com.example.basevideodemo.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
@@ -61,6 +62,17 @@ public class VideoAndMusicActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = mFragmentInfoBeans.get(mViewPager.getCurrentItem()).getFragment();
+        if (fragment != null && fragment instanceof VideoFragment) {
+            if (!((VideoFragment) fragment).onBackPressed()) {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
 
 
