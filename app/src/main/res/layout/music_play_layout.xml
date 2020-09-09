@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="12dp">
+
+            <ImageView
+                android:id="@+id/music_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#CCCCCC"
+                android:scaleType="fitXY" />
+
+            <RelativeLayout
+                android:id="@+id/play_music_rl"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:id="@+id/control_music_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/pause_music" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp">
+
+            <TextView
+                android:id="@+id/music_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/music_play_rl"
+                android:layout_marginBottom="10dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="#333333"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                tools:text="马云马化腾对决" />
+
+            <RelativeLayout
+                android:id="@+id/music_play_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:id="@+id/music_play_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textStart"
+                    android:textColor="#999999"
+                    android:textSize="12dp"
+                    tools:text="播放量 1354" />
+
+                <TextView
+                    android:id="@+id/music_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@id/music_play_count"
+                    android:textAlignment="textEnd"
+                    android:textColor="#666666"
+                    android:textSize="13dp"
+                    tools:text="2020.07.16" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/music_play_sb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="3dp"
+        android:paddingTop="8dp"
+        android:paddingRight="3dp"
+        android:paddingBottom="8dp"
+        android:maxHeight="3dp"
+        android:minHeight="1dp"
+        android:progressDrawable="@drawable/seek_bar_progress"
+        android:thumb="@drawable/seek_thumb_pressed" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="12dp">
+
+        <TextView
+            android:id="@+id/play_start_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textColor="#333333"
+            android:textSize="12dp"
+            tools:text="03:00" />
+
+        <TextView
+            android:id="@+id/play_end_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="#333333"
+            android:textSize="12dp"
+            tools:text="03:00" />
+    </RelativeLayout>
+
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+

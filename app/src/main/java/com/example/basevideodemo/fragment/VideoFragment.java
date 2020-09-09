@@ -17,8 +17,6 @@ import com.example.basevideodemo.widget.view.PlatVideoStd;
 
 import cn.jzvd.Jzvd;
 
-import static cn.jzvd.Jzvd.SCREEN_FULLSCREEN;
-
 
 /**
  * @author puyantao
@@ -58,7 +56,7 @@ public class VideoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_video, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_video_my, container, false);
         mPlayVideo = rootView.findViewById(R.id.jz_video);
         return rootView;
     }

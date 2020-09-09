@@ -15,14 +15,14 @@ import com.example.basevideodemo.R;
  * @description 音频 + 视频
  * @date 2020/9/4 20:28
  */
-public class MusicAndVideoFragment extends Fragment {
+public class MyVideoFragment extends Fragment {
 
-    public MusicAndVideoFragment() {
+    public MyVideoFragment() {
         // Required empty public constructor
     }
 
-    public static MusicAndVideoFragment newInstance() {
-        MusicAndVideoFragment fragment = new MusicAndVideoFragment();
+    public static MyVideoFragment newInstance() {
+        MyVideoFragment fragment = new MyVideoFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -39,6 +39,6 @@ public class MusicAndVideoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_music_and_video, container, false);
+        return inflater.inflate(R.layout.fragment_music_my, container, false);
     }
 }
