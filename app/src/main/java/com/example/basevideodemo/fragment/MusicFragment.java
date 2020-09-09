@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.model.BasePlayMusicBean;
+import com.example.basevideodemo.until.GetAssetsFiles;
 import com.example.basevideodemo.widget.view.PlatMusicStd;
 
 /**
@@ -57,11 +58,10 @@ public class MusicFragment extends Fragment {
     private void intiData() {
         BasePlayMusicBean musicBean = new BasePlayMusicBean();
         musicBean.setId("12121221");
-        musicBean.setRow(R.raw.fly);
+        musicBean.setPlayUrl(GetAssetsFiles.getFileFromAssetsPath("fly.mp3"));
         musicBean.setContentTitle("视频播放器");
         musicBean.setPlayCount("播放量 1354");
         musicBean.setPlayDate("2020.09.09");
-        musicBean.setLocal(true);
         mPlatMusicStd.setMusicDate(musicBean);
 
     }

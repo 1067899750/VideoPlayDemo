@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.basevideodemo.R;
+import com.example.basevideodemo.fragment.MusicFragment;
 import com.example.basevideodemo.fragment.MyVideoFragment;
 import com.example.basevideodemo.fragment.MyMusicFragment;
 import com.example.basevideodemo.fragment.VideoFragment;
@@ -58,6 +59,7 @@ public class VideoAndMusicActivity extends AppCompatActivity {
     private void intData() {
         mFragmentInfoBeans.add(new FragmentInfoBean("自定义音频", MyMusicFragment.newInstance()));
         mFragmentInfoBeans.add(new FragmentInfoBean("自定义视频", MyVideoFragment.newInstance()));
+        mFragmentInfoBeans.add(new FragmentInfoBean("音频", MusicFragment.newInstance()));
         mFragmentInfoBeans.add(new FragmentInfoBean("视频", VideoFragment.newInstance()));
         mVideoPagerAdapter.notifyDataSetChanged();
     }

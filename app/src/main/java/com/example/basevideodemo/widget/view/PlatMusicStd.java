@@ -43,7 +43,10 @@ public class PlatMusicStd extends Jzvd {
 
     @Override
     public void init(Context context) {
-        super.init(context);
+        View.inflate(context, getLayoutId(), this);
+        progressBar = findViewById(R.id.bottom_seek_progress);
+        currentTimeTextView = findViewById(R.id.current);
+        totalTimeTextView = findViewById(R.id.total);
         //图片
         mMusicIv = findViewById(R.id.music_iv);
         mPlayMusicRl = findViewById(R.id.play_music_rl);
@@ -135,6 +138,7 @@ public class PlatMusicStd extends Jzvd {
      */
     public void setMusicDate(BasePlayMusicBean bean) {
         this.mBasePlayMusicBean = bean;
+        setUp(bean.getPlayUrl(), bean.getContentTitle());
         Glide.with(getContext()).load(bean.getPlayPic()).into(mMusicIv);
         mMusicTitleTv.setText(bean.getContentTitle());
         mMusicPlayCount.setText(bean.getPlayCount());

@@ -6,11 +6,11 @@ import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.model.BasePlayMusicBean;
-import com.example.basevideodemo.until.SeekBarUtils;
 import com.example.basevideodemo.until.VideoTimeUtils;
 
 import java.io.IOException;
@@ -27,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 
 /**
  * @author puyantao
@@ -87,8 +87,6 @@ public class BaseMusicPlayView extends FrameLayout {
         mMusicDate = rootView.findViewById(R.id.music_date);
         //进度条
         mSeekBar = rootView.findViewById(R.id.music_play_sb);
-        mSeekBar.setProgressDrawable(getResources().getDrawable(R.drawable.seek_bar_progress));
-//        SeekBarUtils.setProgressDrawable(mSeekBar, R.drawable.seek_bar_progress);
         //进度时间
         mPlayStartTimeTv = rootView.findViewById(R.id.play_start_time_tv);
         //结束时间
@@ -131,7 +129,10 @@ public class BaseMusicPlayView extends FrameLayout {
         mMediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int percent) {
-
+                Log.d("--->", "onBufferingUpdate: " + percent);
+                if (percent != 0) {
+                    mSeekBar.setSecondaryProgress(percent);
+                }
             }
         });
 
@@ -260,7 +261,7 @@ public class BaseMusicPlayView extends FrameLayout {
      */
     private void initMusicPlayData(BasePlayMusicBean bean) {
         try {
-            Glide.with(this).load(bean.getPlayPic()).into(mMusicIv);
+            Glide.with(getContext()).load(bean.getPlayPic()).into(mMusicIv);
             if (bean.isLocal()) {
                 AssetFileDescriptor file = getResources().openRawResourceFd(bean.getRow());
                 mMediaPlayer.setDataSource(file.getFileDescriptor(), file.getStartOffset(),
