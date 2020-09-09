@@ -827,7 +827,6 @@ public class PlatVideoStd extends Jzvd {
         if (mDismissControlViewTimerTask != null) {
             mDismissControlViewTimerTask.cancel();
         }
-
     }
 
     @Override

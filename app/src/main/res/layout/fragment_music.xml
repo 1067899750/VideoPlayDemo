@@ -3,22 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.MyMusicFragment">
+    tools:context=".fragment.MusicFragment">
 
-    <com.example.basevideodemo.widget.view.BaseMusicPlayView
-        android:id="@+id/music_play_view"
+
+    <com.example.basevideodemo.widget.view.PlatMusicStd
+        android:id="@+id/plat_music_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp" />
 
 </FrameLayout>
-
-
-
-
-
-
-
-
-
-
