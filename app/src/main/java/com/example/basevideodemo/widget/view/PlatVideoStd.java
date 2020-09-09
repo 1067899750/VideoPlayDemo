@@ -639,7 +639,6 @@ public class PlatVideoStd extends Jzvd {
             case SCREEN_TINY:
                 break;
         }
-
     }
 
     public void changeUiToError() {
