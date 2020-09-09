@@ -87,7 +87,7 @@ public class BaseMusicPlayView extends FrameLayout {
         mMusicDate = rootView.findViewById(R.id.music_date);
         //进度条
         mSeekBar = rootView.findViewById(R.id.music_play_sb);
-
+        mSeekBar.setProgressDrawable(getResources().getDrawable(R.drawable.seek_bar_progress));
 //        SeekBarUtils.setProgressDrawable(mSeekBar, R.drawable.seek_bar_progress);
         //进度时间
         mPlayStartTimeTv = rootView.findViewById(R.id.play_start_time_tv);

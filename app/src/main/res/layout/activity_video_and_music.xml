@@ -27,7 +27,7 @@
         app:tabTextAppearance="@style/TabLayoutTextSize"
         app:tabTextColor="#000000" />
 
-    <androidx.viewpager.widget.ViewPager
+    <com.example.basevideodemo.widget.view.NoScrollViewPager
         android:id="@+id/content_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

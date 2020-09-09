@@ -14,6 +14,7 @@ import com.example.basevideodemo.fragment.MyMusicFragment;
 import com.example.basevideodemo.fragment.VideoFragment;
 import com.example.basevideodemo.model.FragmentInfoBean;
 import com.example.basevideodemo.widget.adapter.VideoPagerAdapter;
+import com.example.basevideodemo.widget.view.NoScrollViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.List;
 public class VideoAndMusicActivity extends AppCompatActivity {
     private List<FragmentInfoBean> mFragmentInfoBeans;
     private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+    private NoScrollViewPager mViewPager;
     private VideoPagerAdapter mVideoPagerAdapter;
 
     public static void startVideoAndMusicActivity(Activity activity) {

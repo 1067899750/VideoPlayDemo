@@ -88,14 +88,17 @@
 
     <SeekBar
         android:id="@+id/music_play_sb"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxHeight="3dp"
+        android:minHeight="1dp"
         android:paddingLeft="3dp"
         android:paddingTop="8dp"
         android:paddingRight="3dp"
         android:paddingBottom="8dp"
-        android:maxHeight="3dp"
-        android:minHeight="1dp"
+        android:max="100"
+        android:progress="50"
         android:progressDrawable="@drawable/seek_bar_progress"
         android:thumb="@drawable/seek_thumb_pressed" />
 
@@ -104,8 +107,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="12dp">
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:id="@+id/play_start_time_tv"
