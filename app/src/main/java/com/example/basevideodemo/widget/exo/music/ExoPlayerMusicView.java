@@ -1,4 +1,4 @@
-package com.example.basevideodemo.widget.view;
+package com.example.basevideodemo.widget.exo.music;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.model.BasePlayMusicBean;
-import com.example.basevideodemo.until.MusicPlayUtils;
+import com.example.basevideodemo.widget.exo.music.MusicPlayUtils;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import androidx.annotation.Nullable;
@@ -25,8 +25,9 @@ import androidx.annotation.Nullable;
  * @create 2020/9/10 9:33
  */
 public class ExoPlayerMusicView extends PlayerControlView {
-    private BasePlayMusicBean mBasePlayMusicBean;
     private static final String SP_NAME = "PlayerMusicControlView";
+    private BasePlayMusicBean mBasePlayMusicBean;
+    private MusicPlayUtils mMusicPlayUtils;
     public static boolean WIFI_TIP_DIALOG_SHOWED = false;
     private Context mContext;
     private ImageView mMusicIv;
@@ -50,6 +51,7 @@ public class ExoPlayerMusicView extends PlayerControlView {
     }
 
     private void initView() {
+        mMusicPlayUtils = new MusicPlayUtils(mContext);
         isPlaying = false;
         //图片
         mMusicIv = findViewById(R.id.music_iv);
@@ -75,9 +77,9 @@ public class ExoPlayerMusicView extends PlayerControlView {
 
     public void initData(BasePlayMusicBean bean) {
         this.mBasePlayMusicBean = bean;
-        MusicPlayUtils.getInstance(mContext).play(bean, false);
+        mMusicPlayUtils.play(bean, false);
         setShowTimeoutMs(-1);
-        setPlayer(MusicPlayUtils.getInstance(mContext).getPlayer());
+        setPlayer(mMusicPlayUtils.getPlayer());
 
         Glide.with(mContext).load(bean.getPlayPic()).into(mMusicIv);
         mMusicTitleTv.setText(bean.getContentTitle());
@@ -113,7 +115,7 @@ public class ExoPlayerMusicView extends PlayerControlView {
         }
         editor.commit();
         getPlayer().setPlayWhenReady(false);
-        MusicPlayUtils.getInstance(mContext).releasePlayer();
+        mMusicPlayUtils.releasePlayer();
     }
 
     public void stopPlay() {

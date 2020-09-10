@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.model.BasePlayMusicBean;
-import com.example.basevideodemo.widget.view.ExoPlayerMusicView;
+import com.example.basevideodemo.widget.exo.music.ExoPlayerMusicView;
 
 /**
  * @author puyantao

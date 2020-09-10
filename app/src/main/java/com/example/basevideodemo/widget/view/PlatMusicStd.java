@@ -187,7 +187,7 @@ public class PlatMusicStd extends Jzvd {
                     showWifiDialog();
                     return;
                 }
-                mediaInterface.start();
+                startVideo();
                 onStatePlaying();
             } else if (state == STATE_PAUSE) {
                 mediaInterface.start();

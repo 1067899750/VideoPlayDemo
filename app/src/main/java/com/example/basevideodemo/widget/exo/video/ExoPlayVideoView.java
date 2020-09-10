@@ -1,4 +1,4 @@
-package com.example.basevideodemo.widget.exo;
+package com.example.basevideodemo.widget.exo.video;
 
 /**
  * @author puyantao
