@@ -7,7 +7,7 @@
     tools:context=".fragment.ExoMusicFragment">
 
 
-    <com.example.basevideodemo.widget.view.PlayerMusicControlView
+    <com.example.basevideodemo.widget.view.ExoPlayerMusicView
         android:id="@+id/exo_music_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

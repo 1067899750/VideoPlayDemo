@@ -18,14 +18,13 @@ import com.example.basevideodemo.until.MusicPlayUtils;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import androidx.annotation.Nullable;
-import cn.jzvd.JZUtils;
 
 /**
  * @author puyantao
  * @describe
  * @create 2020/9/10 9:33
  */
-public class PlayerMusicControlView extends PlayerControlView {
+public class ExoPlayerMusicView extends PlayerControlView {
     private BasePlayMusicBean mBasePlayMusicBean;
     private static final String SP_NAME = "PlayerMusicControlView";
     public static boolean WIFI_TIP_DIALOG_SHOWED = false;
@@ -36,15 +35,15 @@ public class PlayerMusicControlView extends PlayerControlView {
     private ImageView mPlayMusic;
     private boolean isPlaying;
 
-    public PlayerMusicControlView(Context context) {
+    public ExoPlayerMusicView(Context context) {
         this(context, null);
     }
 
-    public PlayerMusicControlView(Context context, @Nullable AttributeSet attrs) {
+    public ExoPlayerMusicView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public PlayerMusicControlView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ExoPlayerMusicView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initView();

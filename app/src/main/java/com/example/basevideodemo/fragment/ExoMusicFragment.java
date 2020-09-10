@@ -10,8 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.model.BasePlayMusicBean;
-import com.example.basevideodemo.widget.view.PlatVideoStd;
-import com.example.basevideodemo.widget.view.PlayerMusicControlView;
+import com.example.basevideodemo.widget.view.ExoPlayerMusicView;
 
 /**
  * @author puyantao
@@ -19,7 +18,7 @@ import com.example.basevideodemo.widget.view.PlayerMusicControlView;
  * @date 2020/9/10 14:35
  */
 public class ExoMusicFragment extends Fragment {
-    private PlayerMusicControlView mMusicControlView;
+    private ExoPlayerMusicView mMusicControlView;
 
     public ExoMusicFragment() {
         // Required empty public constructor
