@@ -16,6 +16,15 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="12dp">
 
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="@dimen/jz_start_button_w_h_normal"
+                android:layout_height="@dimen/jz_start_button_w_h_normal"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminateDrawable="@drawable/jz_loading"
+                android:visibility="invisible" />
+
             <ImageView
                 android:id="@+id/music_iv"
                 android:layout_width="match_parent"

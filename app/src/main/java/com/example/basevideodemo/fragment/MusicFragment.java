@@ -7,7 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.model.BasePlayMusicBean;
 import com.example.basevideodemo.until.GetAssetsFiles;
@@ -65,7 +68,10 @@ public class MusicFragment extends Fragment {
         musicBean.setPlayDate("2020.09.09");
         mPlatMusicStd.setMusicDate(musicBean);
 
+
+
     }
+
 }
 
 
