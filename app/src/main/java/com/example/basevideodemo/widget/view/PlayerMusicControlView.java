@@ -1,7 +1,11 @@
 package com.example.basevideodemo.widget.view;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +18,7 @@ import com.example.basevideodemo.until.MusicPlayUtils;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import androidx.annotation.Nullable;
+import cn.jzvd.JZUtils;
 
 /**
  * @author puyantao
@@ -23,6 +28,7 @@ import androidx.annotation.Nullable;
 public class PlayerMusicControlView extends PlayerControlView {
     private BasePlayMusicBean mBasePlayMusicBean;
     private static final String SP_NAME = "PlayerMusicControlView";
+    public static boolean WIFI_TIP_DIALOG_SHOWED = false;
     private Context mContext;
     private ImageView mMusicIv;
     private TextView mMusicTitleTv;
@@ -58,11 +64,11 @@ public class PlayerMusicControlView extends PlayerControlView {
         findViewById(R.id.control_play).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPlaying) {
-                    stopPlay();
-                } else {
-                    startPlay();
+                if (!isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED) {
+                    showWifiDialog();
+                    return;
                 }
+                setStartOrPauseMusic();
             }
         });
     }
@@ -86,6 +92,14 @@ public class PlayerMusicControlView extends PlayerControlView {
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+    }
+
+    private void setStartOrPauseMusic() {
+        if (isPlaying) {
+            stopPlay();
+        } else {
+            startPlay();
+        }
     }
 
 
@@ -125,6 +139,30 @@ public class PlayerMusicControlView extends PlayerControlView {
     public boolean isPlaying() {
         return isPlaying;
     }
+
+
+    private boolean isWifiConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    private void showWifiDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("您当前正在使用移动网络，继续播放将消耗流量");
+        builder.setPositiveButton("继续播放", (dialog, which) -> {
+            dialog.dismiss();
+            setStartOrPauseMusic();
+            WIFI_TIP_DIALOG_SHOWED = true;
+        });
+        builder.setNegativeButton("停止播放", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.setOnCancelListener(DialogInterface::dismiss);
+        builder.create().show();
+    }
+
+
 }
 
 

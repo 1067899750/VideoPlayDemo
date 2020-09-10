@@ -3,7 +3,9 @@ package com.example.basevideodemo.until;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.basevideodemo.R;
 import com.example.basevideodemo.model.BasePlayMusicBean;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -109,7 +111,9 @@ public class MusicPlayUtils {
     }
 
     public void play(BasePlayMusicBean bean, Boolean playWhenReady) {
-        if (bean == null) {
+        if (bean == null || bean.getPlayUrl() == null) {
+            //播放地址无效
+            Toast.makeText(mContextWeakReference.get(), "播放地址无效", Toast.LENGTH_SHORT).show();
             return;
         }
         initPlay();
