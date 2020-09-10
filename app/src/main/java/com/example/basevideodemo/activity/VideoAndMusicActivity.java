@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.fragment.ExoMusicFragment;
+import com.example.basevideodemo.fragment.ExoVideoFragment;
 import com.example.basevideodemo.fragment.MusicFragment;
 import com.example.basevideodemo.fragment.MyVideoFragment;
 import com.example.basevideodemo.fragment.MyMusicFragment;
@@ -61,6 +62,7 @@ public class VideoAndMusicActivity extends AppCompatActivity {
         mFragmentInfoBeans.add(new FragmentInfoBean("自定义音频", MyMusicFragment.newInstance()));
         mFragmentInfoBeans.add(new FragmentInfoBean("自定义视频", MyVideoFragment.newInstance()));
         mFragmentInfoBeans.add(new FragmentInfoBean("Exo 音频", ExoMusicFragment.newInstance()));
+        mFragmentInfoBeans.add(new FragmentInfoBean("Exo 视频", ExoVideoFragment.newInstance()));
         mFragmentInfoBeans.add(new FragmentInfoBean("JZVD 音频", MusicFragment.newInstance()));
         mFragmentInfoBeans.add(new FragmentInfoBean("JZVD 视频", VideoFragment.newInstance()));
         mVideoPagerAdapter.notifyDataSetChanged();

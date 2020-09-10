@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -18,8 +19,8 @@
 
         <RelativeLayout
             android:id="@+id/play_video_rl"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="9dp">
 
@@ -28,19 +29,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/exo_icon_play" />
-
+                android:src="@drawable/video_stop" />
 
             <ImageView
                 android:id="@+id/exo_pause"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/exo_icon_pause" />
+                android:src="@drawable/video_start"
+                android:visibility="invisible" />
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/video_start_time_tv"
+            android:id="@+id/exo_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -48,7 +49,7 @@
             android:layout_toRightOf="@id/play_video_rl"
             android:text="00:00"
             android:textColor="#FFFFFF"
-            android:textSize="11sp" />
+            android:textSize="11dp" />
 
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@+id/exo_progress"
@@ -57,15 +58,15 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/video_end_time_tv"
-            android:layout_toRightOf="@id/video_start_time_tv"
+            android:layout_toLeftOf="@id/exo_duration"
+            android:layout_toRightOf="@id/exo_position"
             app:buffered_color="#F17478"
             app:played_color="#BB1B21"
             app:unplayed_color="#A4A4A4" />
 
 
         <TextView
-            android:id="@+id/video_end_time_tv"
+            android:id="@+id/exo_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -73,7 +74,7 @@
             android:layout_toLeftOf="@id/video_control_iv"
             android:text="03:00"
             android:textColor="#FFFFFF"
-            android:textSize="11sp" />
+            android:textSize="11dp" />
 
         <ImageView
             android:id="@+id/video_control_iv"
@@ -86,12 +87,3 @@
     </RelativeLayout>
 
 </RelativeLayout>
-
-
-
-
-
-
-
-
-
