@@ -13,12 +13,13 @@ import com.example.basevideodemo.until.CommonUtils;
  * @date 2020/9/4
  */
 public class BaseApp extends Application {
+    private Context mContext;
     private HttpProxyCacheServer proxy;
 
     @Override
     public void onCreate() {
         super.onCreate();
-
+        this.mContext = this;
     }
 
     public static HttpProxyCacheServer getProxy(Context context) {

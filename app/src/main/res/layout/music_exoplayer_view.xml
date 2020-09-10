@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="12dp">
+
+            <ImageView
+                android:id="@+id/music_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#cccccc"
+                android:scaleType="fitXY" />
+
+            <RelativeLayout
+                android:id="@+id/control_play"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerInParent="true"
+                android:background="#00000000">
+
+                <ImageView
+                    android:id="@+id/play_music"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/pause_music" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp">
+
+            <TextView
+                android:id="@+id/music_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/music_play_rl"
+                android:layout_marginBottom="10dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="#333333"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                tools:text="马云马化腾对决" />
+
+            <RelativeLayout
+                android:id="@+id/music_play_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:id="@+id/music_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textAlignment="textStart"
+                    android:textColor="#666666"
+                    android:textSize="13dp"
+                    tools:text="2020.07.16" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <com.google.android.exoplayer2.ui.DefaultTimeBar
+        android:id="@id/exo_progress"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="8dp"
+        app:buffered_color="#D85C61"
+        app:played_color="#ffBB1B21"
+        app:scrubber_drawable="@drawable/seek_thumb_pressed"
+        app:unplayed_color="#C6C6C6" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:id="@+id/exo_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textColor="#333333"
+            android:textSize="12dp"
+            tools:text="03:00" />
+
+        <TextView
+            android:id="@+id/exo_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="#333333"
+            android:textSize="12dp"
+            tools:text="03:00" />
+    </RelativeLayout>
+
+</LinearLayout>
