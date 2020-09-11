@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Jzvd.resetAllVideos();
+        mExoPlayerView.getPlayer().setPlayWhenReady(false);
     }
 
     @Override

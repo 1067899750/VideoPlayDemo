@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.basevideodemo.R;
@@ -30,6 +32,11 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
     private ExoVideoBean mExoVideoBean;
     private ImageView mExoBgIv;
     private ImageView mExoVideoFullscreen;
+    private RelativeLayout mExoControllerTop;
+    private View mExoBack;
+    private TextView mExoVideoTitle;
+    private ImageView mExoBatteryLevel;
+    private TextView mExoVideoCurrentTime;
     private Boolean isFullScreen = false;
 
     public ExoPlayVideoView(Context context) {
@@ -52,12 +59,18 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
     private void initView() {
         mExoBgIv = findViewById(R.id.video_iv);
         mExoVideoFullscreen = findViewById(R.id.exo_video_fullscreen);
-        mExoVideoFullscreen.setOnClickListener(this);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        mExoControllerTop = findViewById(R.id.exo_controller_top);
+        mExoBack = findViewById(R.id.exo_back);
+        mExoVideoTitle = findViewById(R.id.exo_video_title);
+        //点量
+        mExoBatteryLevel = findViewById(R.id.exo_battery_level);
+        //当前时间
+        mExoVideoCurrentTime = findViewById(R.id.exo_video_current_time);
     }
 
     private void intiEvent() {
+        mExoBack.setOnClickListener(this);
+        mExoVideoFullscreen.setOnClickListener(this);
         mVideoPlayUtils.setOnVideoPlayListener(new VideoPlayUtils.OnVideoPlayListener() {
             @Override
             public void isStartPlay(ExoVideoBean bean) {
@@ -66,7 +79,7 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
                     showWifiDialog();
                     return;
                 }
-                setAllControlsVisible(View.GONE);
+                setAllControlsVisible(View.GONE, View.GONE);
             }
 
             @Override
@@ -91,11 +104,11 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
         mVideoPlayUtils.play(bean, false);
         setControllerShowTimeoutMs(-1);
         setPlayer(mVideoPlayUtils.getExoPlayer());
-
+        mExoVideoTitle.setText(bean.getTitle());
         Glide.with(mContext).load(bean.getVideoPic()).into(mExoBgIv);
         SharedPreferences sp = mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         getPlayer().seekTo(sp.getLong(bean.getVideoUrl(), 0));
-        setAllControlsVisible(View.VISIBLE);
+        setAllControlsVisible(View.VISIBLE, View.GONE);
 
     }
 
@@ -103,10 +116,12 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
     /**
      * 设置试图隐藏和显示
      *
-     * @param bg 背景图片
+     * @param bg   背景图片
+     * @param back 返回按鍵
      */
-    public void setAllControlsVisible(int bg) {
+    public void setAllControlsVisible(int bg, int back) {
         mExoBgIv.setVisibility(bg);
+        mExoBack.setVisibility(back);
 
     }
 
@@ -178,10 +193,13 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
                 isFullScreen = false;
             } else {
                 // 设置全屏
-                 mExoVideoFullscreen.setImageResource(R.drawable.video_shrink);
+                mExoVideoFullscreen.setImageResource(R.drawable.video_shrink);
                 ((Activity) mContext).getWindow().addFlags(flagsFullScreen);
                 isFullScreen = true;
             }
+        } else if (id == R.id.exo_back) {
+            //返回按键
+
         }
     }
 

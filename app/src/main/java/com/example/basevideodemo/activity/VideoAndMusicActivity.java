@@ -108,6 +108,7 @@ public class VideoAndMusicActivity extends AppCompatActivity {
         mFragmentInfoBeans.add(new FragmentInfoBean("JZVD 音频", MusicFragment.newInstance()));
         mFragmentInfoBeans.add(new FragmentInfoBean("JZVD 视频", VideoFragment.newInstance()));
         mVideoPagerAdapter.notifyDataSetChanged();
+        mViewPager.setCurrentItem(3);
     }
 
 

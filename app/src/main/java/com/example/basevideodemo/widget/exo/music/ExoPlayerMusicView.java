@@ -7,16 +7,11 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.basevideodemo.R;
-import com.example.basevideodemo.model.BasePlayMusicBean;
-import com.example.basevideodemo.widget.exo.music.MusicPlayUtils;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import androidx.annotation.Nullable;
