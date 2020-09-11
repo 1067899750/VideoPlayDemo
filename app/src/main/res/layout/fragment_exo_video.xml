@@ -14,6 +14,7 @@
             android:id="@+id/exo_play_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#F12B2B"
             app:controller_layout_id="@layout/video_exoplayer_view"
             app:show_buffering="always" />
     </RelativeLayout>
