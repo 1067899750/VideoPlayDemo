@@ -1,15 +1,16 @@
 package com.example.basevideodemo.widget.exo.video;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,12 +19,25 @@ import com.bumptech.glide.Glide;
 import com.example.basevideodemo.R;
 import com.google.android.exoplayer2.ui.PlayerView;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedList;
+
 /**
  * @author puyantao
  * @describe
  * @create 2020/9/10 16:32
  */
 public class ExoPlayVideoView extends PlayerView implements View.OnClickListener {
+    public static int FULLSCREEN_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE;
+    public static int NORMAL_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    public static LinkedList<ViewGroup> CONTAINER_LIST = new LinkedList<>();
+    //这个应该重写一下，刷新列表，新增列表的刷新，不打断播放，应该是个flag
+    protected long goBakFullscreenTime = 0;
+    public static final int SCREEN_NORMAL = 0;
+    public static final int SCREEN_FULLSCREEN = 1;
+    public static final int SCREEN_TINY = 2;
+    public static boolean TOOL_BAR_EXIST = true;
     private Context mContext;
     private static final String SP_NAME = "ExoPlayVideoView";
     public static boolean WIFI_TIP_DIALOG_SHOWED = false;
@@ -37,7 +51,7 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
     private TextView mExoVideoTitle;
     private ImageView mExoBatteryLevel;
     private TextView mExoVideoCurrentTime;
-    private Boolean isFullScreen = false;
+    public int screen = -1;
 
     public ExoPlayVideoView(Context context) {
         this(context, null);
@@ -100,6 +114,7 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
      * @param bean
      */
     public void addData(ExoVideoBean bean) {
+        this.screen = SCREEN_NORMAL;
         this.mExoVideoBean = bean;
         mVideoPlayUtils.play(bean, false);
         setControllerShowTimeoutMs(-1);
@@ -182,27 +197,120 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.exo_video_fullscreen) {
-            int flagsFullScreen = WindowManager.LayoutParams.FLAG_FULLSCREEN;
-            if (isFullScreen) {
-                mExoVideoFullscreen.setImageResource(R.drawable.video_enlarge);
-                //退出全屏
-                WindowManager.LayoutParams attrs = ((Activity) mContext).getWindow().getAttributes();
-                attrs.flags &= (~flagsFullScreen);
-                ((Activity) mContext).getWindow().setAttributes(attrs);
-                ((Activity) mContext).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-                isFullScreen = false;
+            if (screen == SCREEN_FULLSCREEN) {
+                //quit fullscreen
+                backPress();
             } else {
-                // 设置全屏
-                mExoVideoFullscreen.setImageResource(R.drawable.video_shrink);
-                ((Activity) mContext).getWindow().addFlags(flagsFullScreen);
-                isFullScreen = true;
+                //into fullscreen
+                gotoScreenFullscreen();
             }
+
         } else if (id == R.id.exo_back) {
             //返回按键
-
+            if (screen == SCREEN_FULLSCREEN) {
+                //quit fullscreen
+                backPress();
+            }
         }
     }
 
+    public void setScreen(int screen) {
+        //特殊的个别的进入全屏的按钮在这里设置  只有setup的时候能用上
+        switch (screen) {
+            case SCREEN_NORMAL:
+                setScreenNormal();
+                break;
+            case SCREEN_FULLSCREEN:
+                setScreenFullscreen();
+                break;
+            case SCREEN_TINY:
+                setScreenTiny();
+                break;
+        }
+    }
+
+
+    /**
+     * 退出
+     *
+     * @return
+     */
+    public boolean backPress() {
+        gotoScreenNormal();
+        return true;
+    }
+
+    /**
+     * 退出全屏
+     */
+    private void gotoScreenNormal() {
+        setAllControlsVisible(View.GONE, View.GONE);
+        mExoVideoFullscreen.setImageResource(R.drawable.video_enlarge);
+        goBakFullscreenTime = System.currentTimeMillis();
+        ViewGroup vg = (ViewGroup) (ExoUtils.scanForActivity(getContext())).getWindow().getDecorView();
+        vg.removeView(this);
+        CONTAINER_LIST.getLast().removeAllViews();
+        CONTAINER_LIST.getLast().addView(this, new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        CONTAINER_LIST.pop();
+
+        setScreenNormal();
+        ExoUtils.showStatusBar(getContext());
+        ExoUtils.setRequestedOrientation(getContext(), NORMAL_ORIENTATION);
+        ExoUtils.showSystemUI(getContext());
+    }
+
+    /**
+     * 設置全屏
+     */
+    private void gotoScreenFullscreen() {
+        setAllControlsVisible(View.GONE, View.VISIBLE);
+        mExoVideoFullscreen.setImageResource(R.drawable.video_shrink);
+        ViewGroup vg = (ViewGroup) getParent();
+        vg.removeView(this);
+        cloneAExo(vg);
+        CONTAINER_LIST.add(vg);
+        vg = (ViewGroup) (ExoUtils.scanForActivity(getContext())).getWindow().getDecorView();
+        vg.addView(this, new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        setScreenFullscreen();
+        ExoUtils.hideStatusBar(getContext());
+        ExoUtils.setRequestedOrientation(getContext(), FULLSCREEN_ORIENTATION);
+        ////华为手机和有虚拟键的手机全屏时可隐藏虚拟键 issue:1326
+        ExoUtils.hideSystemUI(getContext());
+    }
+
+
+    public void cloneAExo(ViewGroup vg) {
+        try {
+            Constructor<ExoPlayVideoView> constructor = (Constructor<ExoPlayVideoView>) ExoPlayVideoView.this.getClass().getConstructor(Context.class);
+            ExoPlayVideoView exo = constructor.newInstance(getContext());
+            exo.setId(getId());
+            vg.addView(exo);
+//            exo.setUp(jzDataSource.cloneMe(), SCREEN_NORMAL, mediaInterfaceClass);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setScreenNormal() {
+        screen = SCREEN_NORMAL;
+    }
+
+    public void setScreenFullscreen() {
+        screen = SCREEN_FULLSCREEN;
+    }
+
+    public void setScreenTiny() {
+        screen = SCREEN_TINY;
+    }
 
 }
 
