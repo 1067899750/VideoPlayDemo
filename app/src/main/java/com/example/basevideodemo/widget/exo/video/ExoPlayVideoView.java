@@ -1,5 +1,6 @@
 package com.example.basevideodemo.widget.exo.video;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,6 +29,8 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
     private VideoPlayUtils mVideoPlayUtils;
     private ExoVideoBean mExoVideoBean;
     private ImageView mExoBgIv;
+    private ImageView mExoVideoFullscreen;
+    private Boolean isFullScreen = false;
 
     public ExoPlayVideoView(Context context) {
         this(context, null);
@@ -48,6 +51,8 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
 
     private void initView() {
         mExoBgIv = findViewById(R.id.video_iv);
+        mExoVideoFullscreen = findViewById(R.id.exo_video_fullscreen);
+        mExoVideoFullscreen.setOnClickListener(this);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
     }
@@ -74,7 +79,6 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
             }
         });
     }
-
 
 
     /**
@@ -161,8 +165,27 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-
+        int id = v.getId();
+        if (id == R.id.exo_video_fullscreen) {
+            int flagsFullScreen = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+            if (isFullScreen) {
+                mExoVideoFullscreen.setImageResource(R.drawable.video_enlarge);
+                //退出全屏
+                WindowManager.LayoutParams attrs = ((Activity) mContext).getWindow().getAttributes();
+                attrs.flags &= (~flagsFullScreen);
+                ((Activity) mContext).getWindow().setAttributes(attrs);
+                ((Activity) mContext).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                isFullScreen = false;
+            } else {
+                // 设置全屏
+                 mExoVideoFullscreen.setImageResource(R.drawable.video_shrink);
+                ((Activity) mContext).getWindow().addFlags(flagsFullScreen);
+                isFullScreen = true;
+            }
+        }
     }
+
+
 }
 
 
