@@ -9,6 +9,7 @@ import com.example.basevideodemo.model.BasePlayMusicBean;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -24,9 +25,9 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
  * @create 2020/9/10 9:28
  */
 public class MusicPlayUtils {
-    private static final String TAG = MusicPlayUtils.class.getSimpleName();
+    private static final String TAG = "MusicPlayUtils";
     private Context mContext;
-    private ExoPlayer player;
+    private SimpleExoPlayer player;
     private BasePlayMusicBean bean;
     private DefaultTrackSelector trackSelector;
     private VideoPlayListener videoPlayListener;
@@ -44,9 +45,11 @@ public class MusicPlayUtils {
     public void initPlay() {
         if (player == null) {
             //传入工厂对象，以便创建选择磁道对象
-            trackSelector = new DefaultTrackSelector();
+            trackSelector = new DefaultTrackSelector(mContext);
             //根据选择磁道创建播放器对象
-            player = ExoPlayerFactory.newSimpleInstance(mContext, trackSelector);
+            player = new SimpleExoPlayer.Builder(mContext)
+                    .setTrackSelector(trackSelector)
+                    .build();
             player.setPlayWhenReady(false);
             player.addListener(new Player.EventListener() {
 
@@ -54,10 +57,31 @@ public class MusicPlayUtils {
                 public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                     switch (playbackState) {
                         case Player.STATE_ENDED:
+                            //播放结束
                             Log.d(TAG, "onPlayerStateChanged: + player.getCurrentTag()");
                             if (videoPlayListener != null) {
-                                videoPlayListener.nowFinishPlay(bean);
+                                videoPlayListener.isEndPlay(bean);
                             }
+                            break;
+                        case Player.STATE_READY:
+                            // 播放器可以立即从当前位置开始播放。如果{@link#getPlayWhenReady（）}为true，否则暂停。
+                            //当点击暂停或者播放时都会调用此方法
+                            //当跳转进度时，进度加载完成后调用此方法
+                            if (player.getPlayWhenReady()){
+                                if (videoPlayListener != null) {
+                                    videoPlayListener.isStartPlay(bean);
+                                }
+                            } else {
+                                if (videoPlayListener != null) {
+                                    videoPlayListener.isPausePlay(bean);
+                                }
+                            }
+                            break;
+                        case Player.STATE_BUFFERING:
+                            ////播放器无法立即从当前位置开始播放。这种状态通常需要加载更多数据时发生。
+                            break;
+                        case Player.STATE_IDLE:
+                            //播放器没有可播放的媒体。
                             break;
                         default:
                             break;
@@ -129,8 +153,13 @@ public class MusicPlayUtils {
     }
 
 
+    /**
+     * 播放监听器
+     */
     public interface VideoPlayListener {
-        void nowFinishPlay(BasePlayMusicBean bean);
+        void isStartPlay(BasePlayMusicBean bean);
+        void isPausePlay(BasePlayMusicBean bean);
+        void isEndPlay(BasePlayMusicBean bean);
     }
 
 

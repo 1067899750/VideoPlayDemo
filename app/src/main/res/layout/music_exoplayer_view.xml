@@ -25,14 +25,28 @@
                 android:scaleType="fitXY" />
 
             <RelativeLayout
-                android:id="@+id/control_play"
+                android:id="@+id/exo_play"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_centerInParent="true"
                 android:background="#00000000">
 
                 <ImageView
-                    android:id="@+id/play_music"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/play_music" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/exo_pause"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:background="#00000000">
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"

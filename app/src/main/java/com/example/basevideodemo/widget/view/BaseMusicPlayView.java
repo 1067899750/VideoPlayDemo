@@ -140,7 +140,7 @@ public class BaseMusicPlayView extends FrameLayout {
         mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mControlMusicIv.setImageResource(R.drawable.pause_music);
+                mControlMusicIv.setImageResource(R.drawable.play_music);
             }
         });
         // 设置错误信息监听
@@ -204,7 +204,7 @@ public class BaseMusicPlayView extends FrameLayout {
      */
     private void setPlayMusicState() {
         if (!mMediaPlayer.isPlaying()) {
-            mControlMusicIv.setImageResource(R.drawable.play_music);
+            mControlMusicIv.setImageResource(R.drawable.pause_music);
             mMediaPlayer.start();
             if (mThreadPoolExecutor != null) {
                 mThreadPoolExecutor.shutdownNow();
@@ -236,7 +236,7 @@ public class BaseMusicPlayView extends FrameLayout {
      * 暂停
      */
     public void setMusicPause() {
-        mControlMusicIv.setImageResource(R.drawable.pause_music);
+        mControlMusicIv.setImageResource(R.drawable.play_music);
         if (mMediaPlayer != null && isPlaying) {
             mMediaPlayer.pause();
             isPlaying = false;

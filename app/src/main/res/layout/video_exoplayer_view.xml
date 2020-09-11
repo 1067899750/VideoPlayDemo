@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="172dp"
     android:background="#CCCCCC">
+
+    <LinearLayout
+        android:id="@+id/exo_controller_top"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/exo_controls_title"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            tools:text="测试阿斯顿" />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/video_iv"
@@ -47,9 +66,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/play_video_rl"
-            android:text="00:00"
             android:textColor="#FFFFFF"
-            android:textSize="11dp" />
+            android:textSize="11dp"
+            tools:text="00:00" />
 
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@+id/exo_progress"
@@ -60,6 +79,7 @@
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@id/exo_duration"
             android:layout_toRightOf="@id/exo_position"
+            app:bar_height="2dp"
             app:buffered_color="#F17478"
             app:played_color="#BB1B21"
             app:unplayed_color="#A4A4A4" />
@@ -71,13 +91,13 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="9dp"
-            android:layout_toLeftOf="@id/video_control_iv"
-            android:text="03:00"
+            android:layout_toLeftOf="@id/exo_video_fullscreen"
             android:textColor="#FFFFFF"
-            android:textSize="11dp" />
+            android:textSize="11dp"
+            tools:text="03:00" />
 
         <ImageView
-            android:id="@+id/video_control_iv"
+            android:id="@+id/exo_video_fullscreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
