@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.model.BasePlayMusicBean;
+import com.example.basevideodemo.widget.exo.music.ExoMusicBean;
 import com.example.basevideodemo.widget.exo.music.ExoPlayerMusicView;
 
 /**
@@ -55,14 +56,14 @@ public class ExoMusicFragment extends Fragment {
     }
 
     private void initData() {
-        BasePlayMusicBean musicBean = new BasePlayMusicBean();
-        musicBean.setId("12121221");
-        musicBean.setPlayUrl("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4");
-        musicBean.setPlayPic("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640");
-        musicBean.setContentTitle("视频播放器");
-        musicBean.setPlayCount("播放量 1354");
-        musicBean.setPlayDate("2020.09.09");
-        mMusicControlView.initData(musicBean);
+        ExoMusicBean bean = new ExoMusicBean();
+        bean.setId("12121221");
+        bean.setPlayUrl("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4");
+        bean.setPlayPic("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640");
+        bean.setContentTitle("视频播放器");
+        bean.setPlayCount("播放量 1354");
+        bean.setPlayDate("2020.09.09");
+        mMusicControlView.initData(bean);
 
     }
 

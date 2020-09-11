@@ -6,15 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="200dp"
+        android:layout_marginTop="50dp">
 
         <com.example.basevideodemo.widget.view.MyJzvdStd
             android:id="@+id/jz_video"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/exo_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:controller_layout_id="@layout/senior_diy_player_control_view"
+            app:show_buffering="always" />
+    </RelativeLayout>
+
     <Button
         android:id="@+id/btn"
         android:layout_width="200dp"

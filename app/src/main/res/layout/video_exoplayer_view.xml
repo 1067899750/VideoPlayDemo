@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="172dp"
-    android:background="#CCCCCC">
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:descendantFocusability="afterDescendants">
 
     <LinearLayout
         android:id="@+id/exo_controller_top"
@@ -43,20 +44,30 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="9dp">
 
-            <ImageView
+            <RelativeLayout
                 android:id="@+id/exo_play"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/video_stop" />
+                android:layout_width="30dp"
+                android:layout_height="30dp">
 
-            <ImageView
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/video_stop" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/exo_pause"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/video_start"
-                android:visibility="invisible" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/video_start" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <TextView
@@ -103,7 +114,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:src="@drawable/jz_enlarge" />
+            android:src="@drawable/video_enlarge" />
     </RelativeLayout>
 
 </RelativeLayout>

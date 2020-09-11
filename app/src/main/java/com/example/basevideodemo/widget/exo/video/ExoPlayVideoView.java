@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -18,14 +20,14 @@ import com.google.android.exoplayer2.ui.PlayerView;
  * @describe
  * @create 2020/9/10 16:32
  */
-public class ExoPlayVideoView extends PlayerView {
+public class ExoPlayVideoView extends PlayerView implements View.OnClickListener {
+    private Context mContext;
     private static final String SP_NAME = "ExoPlayVideoView";
     public static boolean WIFI_TIP_DIALOG_SHOWED = false;
-    private Context mContext;
+    private boolean isCompletePlay = false;
     private VideoPlayUtils mVideoPlayUtils;
     private ExoVideoBean mExoVideoBean;
     private ImageView mExoBgIv;
-    private boolean isPlaying;
 
     public ExoPlayVideoView(Context context) {
         this(context, null);
@@ -40,12 +42,39 @@ public class ExoPlayVideoView extends PlayerView {
         this.mContext = context;
         mVideoPlayUtils = new VideoPlayUtils(mContext);
         initView();
+        intiEvent();
     }
+
 
     private void initView() {
         mExoBgIv = findViewById(R.id.video_iv);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
     }
+
+    private void intiEvent() {
+        mVideoPlayUtils.setOnVideoPlayListener(new VideoPlayUtils.OnVideoPlayListener() {
+            @Override
+            public void isStartPlay(ExoVideoBean bean) {
+                isCompletePlay = false;
+                if (!isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED) {
+                    showWifiDialog();
+                    return;
+                }
+                setAllControlsVisible(View.GONE);
+            }
+
+            @Override
+            public void isPausePlay(ExoVideoBean bean) {
+            }
+
+            @Override
+            public void isEndPlay(ExoVideoBean bean) {
+                isCompletePlay = true;
+            }
+        });
+    }
+
 
 
     /**
@@ -62,13 +91,28 @@ public class ExoPlayVideoView extends PlayerView {
         Glide.with(mContext).load(bean.getVideoPic()).into(mExoBgIv);
         SharedPreferences sp = mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         getPlayer().seekTo(sp.getLong(bean.getVideoUrl(), 0));
+        setAllControlsVisible(View.VISIBLE);
+
     }
 
 
+    /**
+     * 设置试图隐藏和显示
+     *
+     * @param bg 背景图片
+     */
+    public void setAllControlsVisible(int bg) {
+        mExoBgIv.setVisibility(bg);
+
+    }
+
+    /**
+     * 销毁
+     */
     public void onDestroy() {
         SharedPreferences sp = mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        if (getPlayer().getDuration() == getPlayer().getCurrentPosition()) {
+        if (getPlayer().getDuration() == getPlayer().getCurrentPosition() || isCompletePlay) {
             //播放完毕
             editor.putLong(mExoVideoBean.getVideoUrl(), 0);
         } else {
@@ -80,31 +124,16 @@ public class ExoPlayVideoView extends PlayerView {
     }
 
 
-    private void setStartOrPauseMusic() {
-        if (isPlaying) {
-            stopPlay();
-        } else {
-            startPlay();
-        }
-    }
-
     public void stopPlay() {
-        isPlaying = false;
         getPlayer().setPlayWhenReady(false);
-//        mPlayMusic.setImageResource(R.drawable.pause_music);
-//        if (findViewById(R.id.exo_pause).getVisibility() == View.VISIBLE) {
-//            findViewById(R.id.exo_pause).performClick();
-//        }
     }
 
     public void startPlay() {
-        isPlaying = true;
         getPlayer().setPlayWhenReady(true);
-//        mPlayMusic.setImageResource(R.drawable.play_music);
+    }
 
-//        if (findViewById(R.id.exo_play).getVisibility() == View.VISIBLE) {
-//            findViewById(R.id.exo_play).performClick();
-//        }
+    public boolean isCompletePlay() {
+        return isCompletePlay;
     }
 
     private boolean isWifiConnected(Context context) {
@@ -118,17 +147,22 @@ public class ExoPlayVideoView extends PlayerView {
         builder.setMessage("您当前正在使用移动网络，继续播放将消耗流量");
         builder.setPositiveButton("继续播放", (dialog, which) -> {
             dialog.dismiss();
-            setStartOrPauseMusic();
+            startPlay();
             WIFI_TIP_DIALOG_SHOWED = true;
         });
         builder.setNegativeButton("停止播放", (dialog, which) -> {
             dialog.dismiss();
+            stopPlay();
         });
         builder.setOnCancelListener(DialogInterface::dismiss);
         builder.create().show();
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }
 
 

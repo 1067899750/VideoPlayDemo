@@ -28,7 +28,7 @@ public class MusicPlayUtils {
     private static final String TAG = "MusicPlayUtils";
     private Context mContext;
     private SimpleExoPlayer player;
-    private BasePlayMusicBean bean;
+    private ExoMusicBean bean;
     private DefaultTrackSelector trackSelector;
     private VideoPlayListener videoPlayListener;
 
@@ -36,10 +36,6 @@ public class MusicPlayUtils {
     public MusicPlayUtils(Context context) {
         this.mContext = context;
         initPlay();
-    }
-
-    public BasePlayMusicBean getBean() {
-        return bean;
     }
 
     public void initPlay() {
@@ -113,15 +109,14 @@ public class MusicPlayUtils {
             //释放播放器对象
             player.release();
             player = null;
-            bean = null;
         }
     }
 
-    public void play(BasePlayMusicBean bean) {
+    public void play(ExoMusicBean bean) {
         play(bean, true);
     }
 
-    public void play(BasePlayMusicBean bean, Boolean playWhenReady) {
+    public void play(ExoMusicBean bean, Boolean playWhenReady) {
         if (bean == null || bean.getPlayUrl() == null) {
             //播放地址无效
             Toast.makeText(mContext, "播放地址无效", Toast.LENGTH_SHORT).show();
@@ -157,9 +152,9 @@ public class MusicPlayUtils {
      * 播放监听器
      */
     public interface VideoPlayListener {
-        void isStartPlay(BasePlayMusicBean bean);
-        void isPausePlay(BasePlayMusicBean bean);
-        void isEndPlay(BasePlayMusicBean bean);
+        void isStartPlay(ExoMusicBean bean);
+        void isPausePlay(ExoMusicBean bean);
+        void isEndPlay(ExoMusicBean bean);
     }
 
 

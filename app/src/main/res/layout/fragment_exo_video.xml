@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.ExoVideoFragment">
@@ -14,7 +14,8 @@
             android:id="@+id/exo_play_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:controller_layout_id="@layout/video_exoplayer_view" />
+            app:controller_layout_id="@layout/video_exoplayer_view"
+            app:show_buffering="always" />
     </RelativeLayout>
 
 </FrameLayout>

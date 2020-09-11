@@ -28,7 +28,7 @@ import androidx.annotation.Nullable;
  */
 public class ExoPlayerMusicView extends PlayerControlView {
     private static final String SP_NAME = "PlayerMusicControlView";
-    private BasePlayMusicBean mBasePlayMusicBean;
+    private ExoMusicBean mBasePlayMusicBean;
     private MusicPlayUtils mMusicPlayUtils;
     public static boolean WIFI_TIP_DIALOG_SHOWED = false;
     private Context mContext;
@@ -62,7 +62,7 @@ public class ExoPlayerMusicView extends PlayerControlView {
     }
 
 
-    public void initData(BasePlayMusicBean bean) {
+    public void initData(ExoMusicBean bean) {
         this.mBasePlayMusicBean = bean;
         mMusicPlayUtils.play(bean, false);
         setShowTimeoutMs(-1);
@@ -75,7 +75,7 @@ public class ExoPlayerMusicView extends PlayerControlView {
         getPlayer().seekTo(sp.getLong(bean.getPlayUrl(), 0));
         mMusicPlayUtils.setListener(new MusicPlayUtils.VideoPlayListener() {
             @Override
-            public void isStartPlay(BasePlayMusicBean bean) {
+            public void isStartPlay(ExoMusicBean bean) {
                 isCompletePlay = false;
                 if (!isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED) {
                     showWifiDialog();
@@ -84,12 +84,12 @@ public class ExoPlayerMusicView extends PlayerControlView {
             }
 
             @Override
-            public void isPausePlay(BasePlayMusicBean bean) {
+            public void isPausePlay(ExoMusicBean bean) {
 
             }
 
             @Override
-            public void isEndPlay(BasePlayMusicBean bean) {
+            public void isEndPlay(ExoMusicBean bean) {
                 isCompletePlay = true;
             }
         });

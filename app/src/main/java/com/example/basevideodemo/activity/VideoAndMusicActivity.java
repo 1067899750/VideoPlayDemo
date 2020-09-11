@@ -12,6 +12,7 @@ import android.text.Spanned;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.fragment.ExoMusicFragment;
