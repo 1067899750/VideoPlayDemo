@@ -125,6 +125,15 @@ public class ExoPlayerMusicView extends PlayerControlView {
         getPlayer().setPlayWhenReady(true);
     }
 
+    /**
+     * 是否完成播放
+     *
+     * @return
+     */
+    public boolean isCompletePlay() {
+        return isCompletePlay;
+    }
+
     private boolean isWifiConnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();

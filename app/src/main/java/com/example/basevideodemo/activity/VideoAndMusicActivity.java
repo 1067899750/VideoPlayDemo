@@ -2,11 +2,16 @@ package com.example.basevideodemo.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.fragment.ExoMusicFragment;
@@ -56,6 +61,42 @@ public class VideoAndMusicActivity extends AppCompatActivity {
         mViewPager.setCurrentItem(0);
         mViewPager.setAdapter(mVideoPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
+
+//        TabLayout.Tab childTab = mTabLayout.newTab();
+//        View view = LayoutInflater.from(this).inflate(R.layout.tab_select_item_view, mTabLayout, false);
+//        childTab.setCustomView(view);
+//        mTabLayout.addTab(childTab);
+
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab == null || tab.getText() == null) {
+                    return;
+                }
+                String trim = tab.getText().toString().trim();
+                SpannableString spStr = new SpannableString(trim);
+                StyleSpan span = new StyleSpan(Typeface.BOLD);
+                spStr.setSpan(span, 0, trim.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                tab.setText(spStr);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                if (tab == null || tab.getText() == null) {
+                    return;
+                }
+                String trim = tab.getText().toString().trim();
+                SpannableString spStr = new SpannableString(trim);
+                StyleSpan span = new StyleSpan(Typeface.NORMAL);
+                spStr.setSpan(span, 0, trim.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                tab.setText(spStr);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     private void intData() {
