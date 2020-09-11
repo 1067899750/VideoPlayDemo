@@ -63,6 +63,14 @@ public class ExoVideoFragment extends Fragment {
 
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isVisibleToUser && mExoPlayVideoView != null){
+            mExoPlayVideoView.stopPlay();
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mExoPlayVideoView.onDestroy();
