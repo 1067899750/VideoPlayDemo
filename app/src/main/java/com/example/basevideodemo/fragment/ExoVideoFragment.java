@@ -7,11 +7,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.model.BaseVideoBean;
 import com.example.basevideodemo.widget.exo.video.ExoPlayVideoView;
 import com.example.basevideodemo.widget.exo.video.ExoVideoBean;
+import com.example.basevideodemo.widget.view.PlatVideoStd;
 
 /**
  * @author puyantao
@@ -20,6 +23,7 @@ import com.example.basevideodemo.widget.exo.video.ExoVideoBean;
  */
 public class ExoVideoFragment extends Fragment {
     private ExoPlayVideoView mExoPlayVideoView;
+    private ImageView mExoBgIv;
 
     public ExoVideoFragment() {
     }
@@ -49,7 +53,7 @@ public class ExoVideoFragment extends Fragment {
 
     private void intiView(View v) {
         mExoPlayVideoView = v.findViewById(R.id.exo_play_video);
-
+        mExoBgIv = v.findViewById(R.id.video_iv);
     }
 
     private void initData() {
@@ -58,7 +62,8 @@ public class ExoVideoFragment extends Fragment {
         bean.setTitle("饺子快长大");
         bean.setVideoUrl("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4");
         bean.setVideoPic("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640");
-        mExoPlayVideoView.addData(bean);
+        mExoPlayVideoView.setUp(bean);
+//        Glide.with(getContext()).load(bean.getVideoPic()).into(mExoBgIv);
     }
 
 
@@ -75,6 +80,22 @@ public class ExoVideoFragment extends Fragment {
         super.onDestroy();
         mExoPlayVideoView.onDestroy();
     }
+
+    /**
+     * 用于返回是否需要实现监听
+     */
+    public boolean onBackPressed() {
+        if (mExoPlayVideoView != null) {
+            if (mExoPlayVideoView.screen == PlatVideoStd.SCREEN_FULLSCREEN) {
+                //推出全屏
+                mExoPlayVideoView.backPress();
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }
 
 

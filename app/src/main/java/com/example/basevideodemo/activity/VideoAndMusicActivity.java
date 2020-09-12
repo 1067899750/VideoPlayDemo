@@ -119,6 +119,10 @@ public class VideoAndMusicActivity extends AppCompatActivity {
             if (!((VideoFragment) fragment).onBackPressed()) {
                 super.onBackPressed();
             }
+        } else if (fragment != null && fragment instanceof ExoVideoFragment) {
+            if (!((ExoVideoFragment) fragment).onBackPressed()) {
+                super.onBackPressed();
+            }
         } else {
             super.onBackPressed();
         }

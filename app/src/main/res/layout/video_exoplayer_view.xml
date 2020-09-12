@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     android:background="#20000000">
 
+    <FrameLayout android:id="@id/exo_ad_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+    </FrameLayout>
+
+    <FrameLayout android:id="@id/exo_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
     <RelativeLayout
         android:id="@+id/exo_controller_top"
         android:layout_width="match_parent"
@@ -78,12 +92,6 @@
                 android:textSize="12.0sp" />
         </LinearLayout>
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/video_iv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -1,9 +1,11 @@
-package com.example.basevideodemo.widget.exo.video;
+package com.example.basevideodemo.widget.exo;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -11,6 +13,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 
+import com.example.basevideodemo.widget.exo.video.ExoPlayVideoView;
 
 
 /**
@@ -112,6 +115,12 @@ public class ExoUtils {
     public static void showSystemUI(Context context) {
         int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
         ExoUtils.getWindow(context).getDecorView().setSystemUiVisibility(SYSTEM_UI);
+    }
+
+    public static boolean isWifiConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
     }
 
 }

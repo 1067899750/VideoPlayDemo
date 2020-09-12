@@ -25,7 +25,7 @@
                 android:scaleType="fitXY" />
 
             <RelativeLayout
-                android:id="@+id/exo_play"
+                android:id="@+id/exo_play_video"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_centerInParent="true"
@@ -134,4 +134,12 @@
             tools:text="03:00" />
     </RelativeLayout>
 
+
+    <ImageView
+        android:id="@+id/exo_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#00000000"
+        android:visibility="gone" />
 </LinearLayout>

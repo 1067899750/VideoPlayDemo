@@ -7,11 +7,13 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.basevideodemo.R;
+import com.example.basevideodemo.widget.exo.ExoUtils;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 
 import androidx.annotation.Nullable;
@@ -31,6 +33,7 @@ public class ExoPlayerMusicView extends PlayerControlView {
     private TextView mMusicTitleTv;
     private TextView mMusicDate;
     private boolean isCompletePlay = false;
+    private boolean isWifiState = true;
 
     public ExoPlayerMusicView(Context context) {
         this(context, null);
@@ -54,6 +57,18 @@ public class ExoPlayerMusicView extends PlayerControlView {
         mMusicTitleTv = findViewById(R.id.music_title_tv);
         //日期
         mMusicDate = findViewById(R.id.music_date);
+        findViewById(R.id.exo_play_video).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!ExoUtils.isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED && isWifiState) {
+                    isWifiState = false;
+                    stopPlay();
+                    showWifiDialog();
+                    return;
+                }
+                startPlay();
+            }
+        });
     }
 
 
@@ -72,15 +87,11 @@ public class ExoPlayerMusicView extends PlayerControlView {
             @Override
             public void isStartPlay(ExoMusicBean bean) {
                 isCompletePlay = false;
-                if (!isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED) {
-                    showWifiDialog();
-                    return;
-                }
             }
 
             @Override
             public void isPausePlay(ExoMusicBean bean) {
-
+                findViewById(R.id.exo_play_video).setVisibility(VISIBLE);
             }
 
             @Override
@@ -117,7 +128,8 @@ public class ExoPlayerMusicView extends PlayerControlView {
     }
 
     public void startPlay() {
-        getPlayer().setPlayWhenReady(true);
+        findViewById(R.id.exo_play_video).setVisibility(GONE);
+        findViewById(R.id.exo_play).performClick();
     }
 
     /**
@@ -129,21 +141,18 @@ public class ExoPlayerMusicView extends PlayerControlView {
         return isCompletePlay;
     }
 
-    private boolean isWifiConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
-    }
 
     private void showWifiDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("您当前正在使用移动网络，继续播放将消耗流量");
         builder.setPositiveButton("继续播放", (dialog, which) -> {
-            dialog.dismiss();
-            startPlay();
             WIFI_TIP_DIALOG_SHOWED = true;
+            isWifiState = true;
+            startPlay();
+            dialog.dismiss();
         });
         builder.setNegativeButton("停止播放", (dialog, which) -> {
+            isWifiState = true;
             dialog.dismiss();
             stopPlay();
         });
