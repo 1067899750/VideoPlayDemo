@@ -33,7 +33,6 @@ public class ExoPlayerMusicView extends PlayerControlView {
     private TextView mMusicTitleTv;
     private TextView mMusicDate;
     private boolean isCompletePlay = false;
-    private boolean isWifiState = true;
 
     public ExoPlayerMusicView(Context context) {
         this(context, null);
@@ -60,8 +59,7 @@ public class ExoPlayerMusicView extends PlayerControlView {
         findViewById(R.id.exo_play_video).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!ExoUtils.isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED && isWifiState) {
-                    isWifiState = false;
+                if (!ExoUtils.isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED) {
                     stopPlay();
                     showWifiDialog();
                     return;
@@ -148,12 +146,10 @@ public class ExoPlayerMusicView extends PlayerControlView {
         builder.setMessage("您当前正在使用移动网络，继续播放将消耗流量");
         builder.setPositiveButton("继续播放", (dialog, which) -> {
             WIFI_TIP_DIALOG_SHOWED = true;
-            isWifiState = true;
             startPlay();
             dialog.dismiss();
         });
         builder.setNegativeButton("停止播放", (dialog, which) -> {
-            isWifiState = true;
             dialog.dismiss();
             stopPlay();
         });
