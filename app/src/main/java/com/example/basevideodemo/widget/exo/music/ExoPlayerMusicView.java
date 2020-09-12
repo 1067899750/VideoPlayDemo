@@ -96,6 +96,7 @@ public class ExoPlayerMusicView extends PlayerControlView {
 
             @Override
             public void isEndPlay(ExoMusicBean bean) {
+                findViewById(R.id.exo_play_video).setVisibility(VISIBLE);
                 isCompletePlay = true;
             }
         });
