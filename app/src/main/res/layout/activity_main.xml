@@ -34,4 +34,34 @@
         android:textColor="#E41A1A"
         android:textSize="18sp" />
 
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@id/btn"
+        android:layout_marginTop="10dp"
+        android:gravity="left"
+        android:background="#E44444">
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:layout_toLeftOf="@id/title_iv"
+            android:text="撒娇啊卡卡卡从撒娇啊卡卡卡从撒娇啊卡卡卡从撒娇啊卡卡卡从"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/title_iv"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/video_stop" />
+    </RelativeLayout>
+
 </RelativeLayout>
