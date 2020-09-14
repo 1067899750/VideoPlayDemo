@@ -14,9 +14,19 @@
             android:id="@+id/exo_play_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#F12B2B"
+            android:background="@android:color/black"
+            app:hide_during_ads="true"
+            app:auto_show="true"
             app:controller_layout_id="@layout/video_exoplayer_view"
-            app:show_buffering="always" />
+            app:resize_mode="fit"
+            app:show_buffering="always"
+            app:surface_type="texture_view" />
+
+        <ImageView
+            android:id="@+id/video_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
     </RelativeLayout>
 
 </FrameLayout>

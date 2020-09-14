@@ -4,32 +4,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
-    android:descendantFocusability="afterDescendants">
+    android:background="#20000000">
 
-    <LinearLayout
+    <FrameLayout android:id="@id/exo_ad_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+    </FrameLayout>
+
+    <FrameLayout android:id="@id/exo_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+    <RelativeLayout
         android:id="@+id/exo_controller_top"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:orientation="horizontal">
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/exo_title_bg"
+        android:paddingStart="10dp"
+        android:paddingLeft="10dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/exo_back"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="12dp"
+            android:padding="3dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/exo_click_back_selector" />
 
         <TextView
-            android:id="@+id/exo_controls_title"
+            android:id="@+id/exo_video_title"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_toLeftOf="@+id/exo_battery_time_layout"
+            android:layout_toEndOf="@+id/exo_back"
+            android:layout_toRightOf="@+id/exo_back"
             android:ellipsize="end"
-            android:lines="1"
+            android:maxLines="1"
             android:singleLine="true"
-            android:textColor="#FFFFFF"
-            tools:text="测试阿斯顿" />
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            tools:text="exo_video" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/exo_battery_time_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="14dp"
+            android:layout_marginRight="14dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:visibility="invisible">
 
-    <ImageView
-        android:id="@+id/video_iv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY" />
+            <ImageView
+                android:id="@+id/exo_battery_level"
+                android:layout_width="23dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/exo_battery_level_10" />
+
+            <TextView
+                android:id="@+id/exo_video_current_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textColor="#ffffffff"
+                android:textSize="12.0sp" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
@@ -78,11 +79,11 @@ public class VideoPlayUtils {
         }
     }
 
-    public void play(ExoVideoBean bean) {
-        play(bean, true);
+    public void play(PlayerView playerView, ExoVideoBean bean) {
+        play(playerView, bean, false);
     }
 
-    public void play(ExoVideoBean bean, boolean playWhenReady) {
+    public void play(PlayerView playerView, ExoVideoBean bean, boolean playWhenReady) {
         if (bean == null || bean.getVideoUrl() == null) {
             //播放地址无效
             Toast.makeText(mContext, "播放地址无效", Toast.LENGTH_SHORT).show();
@@ -101,8 +102,9 @@ public class VideoPlayUtils {
                 .createMediaSource(Uri.parse(bean.getVideoUrl()));
         mExoPlayer.prepare(mediaSource);
         mExoPlayer.setPlayWhenReady(playWhenReady);
-
-
+        //准备播放
+        playerView.setControllerShowTimeoutMs(-1);
+        playerView.setPlayer(mExoPlayer);
     }
 
 

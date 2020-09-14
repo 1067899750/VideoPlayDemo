@@ -108,6 +108,7 @@ public class VideoAndMusicActivity extends AppCompatActivity {
         mFragmentInfoBeans.add(new FragmentInfoBean("JZVD 音频", MusicFragment.newInstance()));
         mFragmentInfoBeans.add(new FragmentInfoBean("JZVD 视频", VideoFragment.newInstance()));
         mVideoPagerAdapter.notifyDataSetChanged();
+        mViewPager.setCurrentItem(3);
     }
 
 
@@ -116,6 +117,10 @@ public class VideoAndMusicActivity extends AppCompatActivity {
         Fragment fragment = mFragmentInfoBeans.get(mViewPager.getCurrentItem()).getFragment();
         if (fragment != null && fragment instanceof VideoFragment) {
             if (!((VideoFragment) fragment).onBackPressed()) {
+                super.onBackPressed();
+            }
+        } else if (fragment != null && fragment instanceof ExoVideoFragment) {
+            if (!((ExoVideoFragment) fragment).onBackPressed()) {
                 super.onBackPressed();
             }
         } else {
