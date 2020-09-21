@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.example.basevideodemo.activity.MyTabActivity;
 import com.example.basevideodemo.activity.VideoAndMusicActivity;
 import com.example.basevideodemo.until.CommonUtils;
 import com.example.basevideodemo.widget.view.MyJzvdStd;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                VideoAndMusicActivity.startVideoAndMusicActivity(MainActivity.this);
+                MyTabActivity.startMyTabActivity(MainActivity.this);
             }
         });
     }

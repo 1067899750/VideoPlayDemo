@@ -63,10 +63,10 @@ public class VideoAndMusicActivity extends AppCompatActivity {
         mViewPager.setAdapter(mVideoPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
-//        TabLayout.Tab childTab = mTabLayout.newTab();
-//        View view = LayoutInflater.from(this).inflate(R.layout.tab_select_item_view, mTabLayout, false);
-//        childTab.setCustomView(view);
-//        mTabLayout.addTab(childTab);
+        TabLayout.Tab childTab = mTabLayout.newTab();
+        View view = LayoutInflater.from(this).inflate(R.layout.tab_select_item_view, mTabLayout, false);
+        childTab.setCustomView(view);
+        mTabLayout.addTab(childTab);
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
