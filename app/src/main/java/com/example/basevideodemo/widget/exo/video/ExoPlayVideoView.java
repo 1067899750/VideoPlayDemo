@@ -160,11 +160,11 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
 
 
     public void stopPlay() {
-        getPlayer().setPlayWhenReady(false);
+        findViewById(R.id.exo_pause).performClick();
     }
 
     public void startPlay() {
-        getPlayer().setPlayWhenReady(true);
+        findViewById(R.id.exo_pause).performClick();
     }
 
     public boolean isCompletePlay() {
