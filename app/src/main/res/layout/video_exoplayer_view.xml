@@ -6,19 +6,22 @@
     android:layout_height="match_parent"
     android:background="#20000000">
 
-    <FrameLayout android:id="@id/exo_ad_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-
-    </FrameLayout>
-
-    <FrameLayout android:id="@id/exo_overlay"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/exo_start_bg_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:id="@+id/exo_controller_top"
@@ -178,5 +181,27 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/video_enlarge" />
     </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/exo_retry_start"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/exo_click_replay_selector" />
+
+
+    <TextView
+        android:id="@+id/exo_replay_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/exo_retry_start"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="6dp"
+        android:text="重播"
+        android:textColor="#ffffff"
+        android:textSize="12sp"
+        android:visibility="invisible" />
 
 </RelativeLayout>

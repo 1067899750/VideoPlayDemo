@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.basevideodemo.R;
 import com.example.basevideodemo.widget.exo.ExoUtils;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -40,7 +41,6 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
     public static boolean TOOL_BAR_EXIST = true;
     private Context mContext;
     private static final String SP_NAME = "ExoPlayVideoView";
-    public static boolean WIFI_TIP_DIALOG_SHOWED = false;
     private boolean isCompletePlay = false;
     private VideoPlayUtils mVideoPlayUtils;
     private ExoVideoBean mExoVideoBean;
@@ -50,8 +50,10 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
     private TextView mExoVideoTitle;
     private ImageView mExoBatteryLevel;
     private TextView mExoVideoCurrentTime;
+    private ImageView mExoStartBgIv;
+    private ImageView mExoRetryStart;
+    private TextView mExoReplayText;
     public int screen = -1;
-    private boolean isWifiState = true;
 
     public ExoPlayVideoView(Context context) {
         this(context, null);
@@ -75,35 +77,42 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
         mExoControllerTop = findViewById(R.id.exo_controller_top);
         mExoBack = findViewById(R.id.exo_back);
         mExoVideoTitle = findViewById(R.id.exo_video_title);
+        //背景图片
+        mExoStartBgIv = findViewById(R.id.exo_start_bg_iv);
         //点量
         mExoBatteryLevel = findViewById(R.id.exo_battery_level);
         //当前时间
         mExoVideoCurrentTime = findViewById(R.id.exo_video_current_time);
+        //是否重置
+        mExoRetryStart = findViewById(R.id.exo_retry_start);
+        mExoRetryStart.setOnClickListener(this);
+        //播放完毕提醒
+        mExoReplayText = findViewById(R.id.exo_replay_text);
     }
 
     private void intiEvent() {
         mExoBack.setOnClickListener(this);
+        mExoStartBgIv.setOnClickListener(this);
         mExoVideoFullscreen.setOnClickListener(this);
         mVideoPlayUtils.setOnVideoPlayListener(new VideoPlayUtils.OnVideoPlayListener() {
             @Override
             public void isStartPlay(ExoVideoBean bean) {
+                mExoRetryStart.setVisibility(GONE);
+                mExoReplayText.setVisibility(GONE);
                 isCompletePlay = false;
-                if (!ExoUtils.isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED && isWifiState) {
-                    isWifiState = false;
-                    stopPlay();
-                    showWifiDialog();
-                    return;
-                }
                 setScreen(screen);
             }
 
             @Override
             public void isPausePlay(ExoVideoBean bean) {
+
             }
 
             @Override
             public void isEndPlay(ExoVideoBean bean) {
                 isCompletePlay = true;
+                mExoRetryStart.setImageResource(R.drawable.exo_click_replay_selector);
+                setAllControlsVisible(View.GONE, View.GONE, View.VISIBLE, View.VISIBLE);
             }
         });
     }
@@ -123,72 +132,13 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
         this.mExoVideoBean = bean;
         mVideoPlayUtils.play(this, bean);
         mExoVideoTitle.setText(bean.getTitle());
+        setAllControlsVisible(View.VISIBLE, View.GONE, View.VISIBLE, View.GONE);
+        Glide.with(this).load(bean.getVideoPic()).into(mExoStartBgIv);
+        mExoRetryStart.setImageResource(R.drawable.exo_click_play_selector);
 
         SharedPreferences sp = mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         getPlayer().seekTo(sp.getLong(bean.getVideoUrl(), 0));
         setScreen(screen);
-    }
-
-
-    /**
-     * 设置试图隐藏和显示
-     *
-     * @param bg   背景图片
-     * @param back 返回按鍵
-     */
-    public void setAllControlsVisible(int bg, int back) {
-        mExoBack.setVisibility(back);
-
-    }
-
-    /**
-     * 销毁
-     */
-    public void onDestroy() {
-        SharedPreferences sp = mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        if (getPlayer().getDuration() == getPlayer().getCurrentPosition() || isCompletePlay) {
-            //播放完毕
-            editor.putLong(mExoVideoBean.getVideoUrl(), 0);
-        } else {
-            editor.putLong(mExoVideoBean.getVideoUrl(), getPlayer().getCurrentPosition());
-        }
-        editor.commit();
-        getPlayer().setPlayWhenReady(false);
-        mVideoPlayUtils.releasePlayer();
-    }
-
-
-    public void stopPlay() {
-        findViewById(R.id.exo_pause).performClick();
-    }
-
-    public void startPlay() {
-        findViewById(R.id.exo_pause).performClick();
-    }
-
-    public boolean isCompletePlay() {
-        return isCompletePlay;
-    }
-
-
-
-    private void showWifiDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("您当前正在使用移动网络，继续播放将消耗流量");
-        builder.setPositiveButton("继续播放", (dialog, which) -> {
-            WIFI_TIP_DIALOG_SHOWED = true;
-            isWifiState = true;
-            startPlay();
-            dialog.dismiss();
-        });
-        builder.setNegativeButton("停止播放", (dialog, which) -> {
-            isWifiState = true;
-            dialog.dismiss();
-            stopPlay();
-        });
-        builder.setOnCancelListener(DialogInterface::dismiss);
-        builder.create().show();
     }
 
 
@@ -211,6 +161,16 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
                 //quit fullscreen
                 backPress();
             }
+        } else if (id == R.id.exo_start_bg_iv) {
+            //点击背景播放
+            setAllControlsVisible(View.GONE, View.GONE, View.GONE, View.GONE);
+            startPlay();
+
+        } else if (id == R.id.exo_retry_start){
+            //重播
+            setAllControlsVisible(View.GONE, View.GONE, View.GONE, View.GONE);
+            startPlay();
+
         }
     }
 
@@ -218,13 +178,12 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
         //特殊的个别的进入全屏的按钮在这里设置  只有setup的时候能用上
         switch (screen) {
             case SCREEN_NORMAL:
-                setAllControlsVisible(View.GONE, View.GONE);
+                setAllControlsVisible(View.GONE, View.GONE, View.GONE, View.GONE);
                 break;
             case SCREEN_FULLSCREEN:
-                setAllControlsVisible(View.GONE, View.VISIBLE);
+                setAllControlsVisible(View.GONE, View.VISIBLE, View.GONE, View.GONE);
                 break;
             case SCREEN_TINY:
-                setAllControlsVisible(View.VISIBLE, View.GONE);
                 break;
         }
     }
@@ -247,7 +206,6 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
         }
         return false;
     }
-
 
 
     /**
@@ -320,6 +278,41 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
         }
     }
 
+
+    /**
+     * 销毁
+     */
+    public void onDestroy() {
+        SharedPreferences sp = mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        if (getPlayer().getDuration() == getPlayer().getCurrentPosition() || isCompletePlay) {
+            //播放完毕
+            editor.putLong(mExoVideoBean.getVideoUrl(), 0);
+        } else {
+            editor.putLong(mExoVideoBean.getVideoUrl(), getPlayer().getCurrentPosition());
+        }
+        editor.commit();
+        getPlayer().setPlayWhenReady(false);
+        mVideoPlayUtils.releasePlayer();
+    }
+
+    /**
+     * 设置试图隐藏和显示
+     *
+     * @param bg         背景图片
+     * @param back       返回按鍵
+     * @param retryStart 是否重置
+     * @param replayText 播放完毕提醒
+     */
+    public void setAllControlsVisible(int bg, int back, int retryStart, int replayText) {
+        mExoStartBgIv.setVisibility(bg);
+        mExoBack.setVisibility(back);
+        mExoRetryStart.setVisibility(retryStart);
+        mExoReplayText.setVisibility(replayText);
+
+    }
+
+
     public void setScreenNormal() {
         screen = SCREEN_NORMAL;
     }
@@ -330,6 +323,18 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
 
     public void setScreenTiny() {
         screen = SCREEN_TINY;
+    }
+
+    public void stopPlay() {
+        findViewById(R.id.exo_pause).performClick();
+    }
+
+    public void startPlay() {
+        findViewById(R.id.exo_play).performClick();
+    }
+
+    public boolean isCompletePlay() {
+        return isCompletePlay;
     }
 
 }
