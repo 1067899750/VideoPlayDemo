@@ -366,7 +366,6 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             mExoStartBgIv.setImageBitmap(bitmap);
-
         }
     }
 
