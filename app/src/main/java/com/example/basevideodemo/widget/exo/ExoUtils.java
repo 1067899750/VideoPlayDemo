@@ -4,8 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,6 +19,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.example.basevideodemo.widget.exo.video.ExoPlayVideoView;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
 
 
 /**
@@ -122,6 +135,43 @@ public class ExoUtils {
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
     }
+
+    /**
+     * 获取视频第一针图片
+     *
+     * @return
+     */
+    public static Bitmap getVideoFirstDosePic(String url) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(url, new HashMap());
+        //获得第10帧图片 这里的第一个参数 以微秒为单位
+        Bitmap bitmap  = retriever.getFrameAtTime(10000000,MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+        retriever.release();
+        return bitmap;
+    }
+
+    /**
+     * 压缩图片
+     *
+     * @param image
+     * @return
+     */
+    public static Bitmap compressImage(Bitmap image) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        int options = 90;
+
+        while (byteArrayOutputStream.toByteArray().length / 1024 > 100) {
+            byteArrayOutputStream.reset();
+            image.compress(Bitmap.CompressFormat.JPEG, options, byteArrayOutputStream);
+            options -= 10;
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
+        return bitmap;
+    }
+
+
 
 }
 

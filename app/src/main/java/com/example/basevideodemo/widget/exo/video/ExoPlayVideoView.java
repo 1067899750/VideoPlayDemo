@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,10 @@ import com.example.basevideodemo.R;
 import com.example.basevideodemo.widget.exo.ExoUtils;
 import com.google.android.exoplayer2.ui.PlayerView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
@@ -99,6 +107,7 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
             public void isStartPlay(ExoVideoBean bean) {
                 mExoRetryStart.setVisibility(GONE);
                 mExoReplayText.setVisibility(GONE);
+                mExoStartBgIv.setVisibility(GONE);
                 isCompletePlay = false;
                 setScreen(screen);
             }
@@ -112,7 +121,9 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
             public void isEndPlay(ExoVideoBean bean) {
                 isCompletePlay = true;
                 mExoRetryStart.setImageResource(R.drawable.exo_click_replay_selector);
-                setAllControlsVisible(View.GONE, View.GONE, View.VISIBLE, View.VISIBLE);
+                mExoRetryStart.setVisibility(VISIBLE);
+                mExoReplayText.setVisibility(VISIBLE);
+                setAllControlsVisible(View.GONE);
             }
         });
     }
@@ -132,8 +143,12 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
         this.mExoVideoBean = bean;
         mVideoPlayUtils.play(this, bean);
         mExoVideoTitle.setText(bean.getTitle());
-        setAllControlsVisible(View.VISIBLE, View.GONE, View.VISIBLE, View.GONE);
+        mExoRetryStart.setVisibility(VISIBLE);
+        mExoReplayText.setVisibility(GONE);
+        mExoStartBgIv.setVisibility(VISIBLE);
+        setAllControlsVisible( View.GONE);
         Glide.with(this).load(bean.getVideoPic()).into(mExoStartBgIv);
+//        new MyVideoAsyncTask().execute(bean.getVideoUrl());
         mExoRetryStart.setImageResource(R.drawable.exo_click_play_selector);
 
         SharedPreferences sp = mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
@@ -163,12 +178,17 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
             }
         } else if (id == R.id.exo_start_bg_iv) {
             //点击背景播放
-            setAllControlsVisible(View.GONE, View.GONE, View.GONE, View.GONE);
+            mExoRetryStart.setVisibility(GONE);
+            mExoReplayText.setVisibility(GONE);
+            setAllControlsVisible(View.GONE);
             startPlay();
 
-        } else if (id == R.id.exo_retry_start){
+        } else if (id == R.id.exo_retry_start) {
             //重播
-            setAllControlsVisible(View.GONE, View.GONE, View.GONE, View.GONE);
+            mExoRetryStart.setVisibility(GONE);
+            mExoReplayText.setVisibility(GONE);
+            mExoStartBgIv.setVisibility(GONE);
+            setAllControlsVisible(View.GONE);
             startPlay();
 
         }
@@ -178,10 +198,10 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
         //特殊的个别的进入全屏的按钮在这里设置  只有setup的时候能用上
         switch (screen) {
             case SCREEN_NORMAL:
-                setAllControlsVisible(View.GONE, View.GONE, View.GONE, View.GONE);
+                setAllControlsVisible(View.GONE);
                 break;
             case SCREEN_FULLSCREEN:
-                setAllControlsVisible(View.GONE, View.VISIBLE, View.GONE, View.GONE);
+                setAllControlsVisible(View.VISIBLE);
                 break;
             case SCREEN_TINY:
                 break;
@@ -299,16 +319,10 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
     /**
      * 设置试图隐藏和显示
      *
-     * @param bg         背景图片
-     * @param back       返回按鍵
-     * @param retryStart 是否重置
-     * @param replayText 播放完毕提醒
+     * @param back 返回按鍵
      */
-    public void setAllControlsVisible(int bg, int back, int retryStart, int replayText) {
-        mExoStartBgIv.setVisibility(bg);
+    public void setAllControlsVisible(int back) {
         mExoBack.setVisibility(back);
-        mExoRetryStart.setVisibility(retryStart);
-        mExoReplayText.setVisibility(replayText);
 
     }
 
@@ -335,6 +349,25 @@ public class ExoPlayVideoView extends PlayerView implements View.OnClickListener
 
     public boolean isCompletePlay() {
         return isCompletePlay;
+    }
+
+    /**
+     * 播放视频第一帧图片的异步任务
+     */
+    class MyVideoAsyncTask extends AsyncTask<String, Void, Bitmap> {
+        public MyVideoAsyncTask() {
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            return ExoUtils.getVideoFirstDosePic(strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            mExoStartBgIv.setImageBitmap(bitmap);
+
+        }
     }
 
 }
