@@ -74,7 +74,8 @@ public class PlatVideoStd extends Jzvd {
     protected ProgressBar mDialogBrightnessProgressBar;
     protected TextView mDialogBrightnessTextView;
     private ImageView mRetryStart;
-
+    private TextView mSpendTv;
+    private float mSpeed = 1;
 
     public PlatVideoStd(Context context) {
         super(context);
@@ -101,6 +102,7 @@ public class PlatVideoStd extends Jzvd {
         mRetryBtn = findViewById(R.id.retry_btn);
         mRetryLayout = findViewById(R.id.retry_layout);
         mRetryStart = findViewById(R.id.retry_start);
+        mSpendTv = findViewById(R.id.spend_tv);
 
         titleTextView.setOnClickListener(this);
         thumbImageView.setOnClickListener(this);
@@ -109,6 +111,7 @@ public class PlatVideoStd extends Jzvd {
         clarity.setOnClickListener(this);
         mRetryBtn.setOnClickListener(this);
         mRetryStart.setOnClickListener(this);
+        mSpendTv.setOnClickListener(this);
     }
 
     @Override
@@ -321,6 +324,20 @@ public class PlatVideoStd extends Jzvd {
                 startVideo();
             } else if (state == STATE_AUTO_COMPLETE) {
                 startVideo();
+            }
+        } else if (i == R.id.spend_tv) {
+            if (mSpeed == 1) {
+                mSpeed = 1.5f;
+            } else if (mSpeed == 1.5f) {
+                mSpeed = 2f;
+            } else if (mSpeed == 2f) {
+                mSpeed = 0.5f;
+            } else if (mSpeed == 0.5f) {
+                mSpeed = 1;
+            }
+            mSpendTv.setText("x" + mSpeed);
+            if (mediaInterface != null) {
+                mediaInterface.setSpeed(mSpeed);
             }
         }
     }
