@@ -72,7 +72,7 @@ public class VideoFragment extends Fragment {
         BaseVideoBean bean = new BaseVideoBean();
         bean.setId("212121");
         bean.setTitle("饺子快长大");
-        bean.setVideoUrl("http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4");
+        bean.setVideoUrl("https://yyttest.purang.com/group1/M00/00/D3/Cgpgml__3zmAWteqAPS355jgrk0139.mp4");
         bean.setVideoPic("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640");
 
         mPlayVideo.setUp(bean.getVideoUrl(), bean.getTitle());

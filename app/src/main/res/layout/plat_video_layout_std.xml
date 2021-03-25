@@ -89,15 +89,16 @@
             android:paddingLeft="20dp"
             android:text="clarity"
             android:textAlignment="center"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/spend_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
             android:text="x1"
             android:textAlignment="center"
-            android:layout_marginLeft="14dp"
             android:textColor="#ffffff" />
 
         <ImageView
@@ -229,6 +230,31 @@
         android:textColor="#ffffff"
         android:textSize="12sp"
         android:visibility="invisible" />
+
+    <RelativeLayout
+        android:id="@+id/seek_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/backward_btn"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/jz_backward_icon" />
+
+        <Button
+            android:id="@+id/forward_btn"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/jz_forward_icon" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/retry_layout"

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -41,8 +42,6 @@ import cn.jzvd.Jzvd;
  * @date 2020/9/5
  */
 public class PlatVideoStd extends Jzvd {
-
-
     public static long LAST_GET_BATTERYLEVEL_TIME = 0;
     public static int LAST_GET_BATTERYLEVEL_PERCENT = 70;
     protected static Timer DISMISS_CONTROL_VIEW_TIMER;
@@ -75,7 +74,10 @@ public class PlatVideoStd extends Jzvd {
     protected TextView mDialogBrightnessTextView;
     private ImageView mRetryStart;
     private TextView mSpendTv;
+    private Button mBackwardBtn;
+    private Button mForwardBtn;
     private float mSpeed = 1;
+    private long mSeekDate = 15000;
 
     public PlatVideoStd(Context context) {
         super(context);
@@ -103,6 +105,8 @@ public class PlatVideoStd extends Jzvd {
         mRetryLayout = findViewById(R.id.retry_layout);
         mRetryStart = findViewById(R.id.retry_start);
         mSpendTv = findViewById(R.id.spend_tv);
+        mBackwardBtn = findViewById(R.id.backward_btn);
+        mForwardBtn = findViewById(R.id.forward_btn);
 
         titleTextView.setOnClickListener(this);
         thumbImageView.setOnClickListener(this);
@@ -112,6 +116,8 @@ public class PlatVideoStd extends Jzvd {
         mRetryBtn.setOnClickListener(this);
         mRetryStart.setOnClickListener(this);
         mSpendTv.setOnClickListener(this);
+        mBackwardBtn.setOnClickListener(this);
+        mForwardBtn.setOnClickListener(this);
     }
 
     @Override
@@ -339,6 +345,10 @@ public class PlatVideoStd extends Jzvd {
             if (mediaInterface != null) {
                 mediaInterface.setSpeed(mSpeed);
             }
+        } else if (i == R.id.backward_btn) {
+            backWard();
+        } else if (i == R.id.forward_btn) {
+            forWard();
         }
     }
 
@@ -348,6 +358,7 @@ public class PlatVideoStd extends Jzvd {
         fullscreenButton.setImageResource(R.drawable.jz_enlarge);
         backButton.setVisibility(View.GONE);
         tinyBackImageView.setVisibility(View.INVISIBLE);
+        findViewById(R.id.seek_rl).setVisibility(GONE);
         changeStartButtonSize((int) getResources().getDimension(R.dimen.start_button_w_h_normal));
         batteryTimeLayout.setVisibility(View.GONE);
         clarity.setVisibility(View.GONE);
@@ -360,6 +371,7 @@ public class PlatVideoStd extends Jzvd {
         fullscreenButton.setImageResource(R.drawable.jz_shrink);
         backButton.setVisibility(View.VISIBLE);
         tinyBackImageView.setVisibility(View.INVISIBLE);
+        findViewById(R.id.seek_rl).setVisibility(VISIBLE);
         batteryTimeLayout.setVisibility(View.VISIBLE);
         if (jzDataSource.urlsMap.size() == 1) {
             clarity.setVisibility(GONE);
@@ -375,8 +387,8 @@ public class PlatVideoStd extends Jzvd {
     public void setScreenTiny() {
         super.setScreenTiny();
         tinyBackImageView.setVisibility(View.VISIBLE);
-        setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.INVISIBLE,
-                View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE);
+        setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.GONE,
+                View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.GONE);
         batteryTimeLayout.setVisibility(View.GONE);
         clarity.setVisibility(View.GONE);
     }
@@ -539,13 +551,9 @@ public class PlatVideoStd extends Jzvd {
     public void changeUiToNormal() {
         switch (screen) {
             case SCREEN_NORMAL:
-                setAllControlsVisiblity(View.VISIBLE, View.INVISIBLE, View.VISIBLE,
-                        View.INVISIBLE, View.VISIBLE, View.INVISIBLE, View.INVISIBLE);
-                updateStartImage();
-                break;
             case SCREEN_FULLSCREEN:
-                setAllControlsVisiblity(View.VISIBLE, View.INVISIBLE, View.VISIBLE,
-                        View.INVISIBLE, View.VISIBLE, View.INVISIBLE, View.INVISIBLE);
+                setAllControlsVisiblity(View.VISIBLE, View.INVISIBLE, View.GONE,
+                        View.INVISIBLE, View.VISIBLE, View.INVISIBLE, View.INVISIBLE, View.GONE);
                 updateStartImage();
                 break;
             case SCREEN_TINY:
@@ -557,8 +565,8 @@ public class PlatVideoStd extends Jzvd {
         switch (screen) {
             case SCREEN_NORMAL:
             case SCREEN_FULLSCREEN:
-                setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.INVISIBLE,
-                        View.VISIBLE, View.VISIBLE, View.INVISIBLE, View.INVISIBLE);
+                setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.GONE,
+                        View.VISIBLE, View.VISIBLE, View.INVISIBLE, View.INVISIBLE, View.GONE);
                 updateStartImage();
                 break;
             case SCREEN_TINY:
@@ -571,29 +579,25 @@ public class PlatVideoStd extends Jzvd {
         switch (screen) {
             case SCREEN_NORMAL:
                 setAllControlsVisiblity(View.VISIBLE, View.VISIBLE, View.VISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE);
+                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.GONE);
                 updateStartImage();
                 break;
             case SCREEN_FULLSCREEN:
                 setAllControlsVisiblity(View.VISIBLE, View.VISIBLE, View.VISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE);
+                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.VISIBLE);
                 updateStartImage();
                 break;
             case SCREEN_TINY:
                 break;
         }
-
     }
 
     public void changeUiToPlayingClear() {
         switch (screen) {
             case SCREEN_NORMAL:
-                setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.INVISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.VISIBLE, View.INVISIBLE);
-                break;
             case SCREEN_FULLSCREEN:
-                setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.INVISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.VISIBLE, View.INVISIBLE);
+                setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.GONE,
+                        View.INVISIBLE, View.INVISIBLE, View.VISIBLE, View.INVISIBLE, View.GONE);
                 break;
             case SCREEN_TINY:
                 break;
@@ -604,13 +608,9 @@ public class PlatVideoStd extends Jzvd {
     public void changeUiToPauseShow() {
         switch (screen) {
             case SCREEN_NORMAL:
-                setAllControlsVisiblity(View.VISIBLE, View.VISIBLE, View.VISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE);
-                updateStartImage();
-                break;
             case SCREEN_FULLSCREEN:
                 setAllControlsVisiblity(View.VISIBLE, View.VISIBLE, View.VISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE);
+                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.GONE);
                 updateStartImage();
                 break;
             case SCREEN_TINY:
@@ -621,12 +621,9 @@ public class PlatVideoStd extends Jzvd {
     public void changeUiToPauseClear() {
         switch (screen) {
             case SCREEN_NORMAL:
-                setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.INVISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.VISIBLE, View.INVISIBLE);
-                break;
             case SCREEN_FULLSCREEN:
-                setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.INVISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.VISIBLE, View.INVISIBLE);
+                setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.GONE,
+                        View.INVISIBLE, View.INVISIBLE, View.VISIBLE, View.INVISIBLE, View.GONE);
                 break;
             case SCREEN_TINY:
                 break;
@@ -637,13 +634,9 @@ public class PlatVideoStd extends Jzvd {
     public void changeUiToComplete() {
         switch (screen) {
             case SCREEN_NORMAL:
-                setAllControlsVisiblity(View.VISIBLE, View.INVISIBLE, View.VISIBLE,
-                        View.INVISIBLE, View.VISIBLE, View.INVISIBLE, View.INVISIBLE);
-                updateStartImage();
-                break;
             case SCREEN_FULLSCREEN:
                 setAllControlsVisiblity(View.VISIBLE, View.INVISIBLE, View.VISIBLE,
-                        View.INVISIBLE, View.VISIBLE, View.INVISIBLE, View.INVISIBLE);
+                        View.INVISIBLE, View.VISIBLE, View.INVISIBLE, View.INVISIBLE, View.GONE);
                 updateStartImage();
                 break;
             case SCREEN_TINY:
@@ -655,12 +648,12 @@ public class PlatVideoStd extends Jzvd {
         switch (screen) {
             case SCREEN_NORMAL:
                 setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.VISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.VISIBLE);
+                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.VISIBLE, View.GONE);
                 updateStartImage();
                 break;
             case SCREEN_FULLSCREEN:
                 setAllControlsVisiblity(View.VISIBLE, View.INVISIBLE, View.VISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.VISIBLE);
+                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.VISIBLE, View.GONE);
                 updateStartImage();
                 break;
             case SCREEN_TINY:
@@ -671,14 +664,16 @@ public class PlatVideoStd extends Jzvd {
 
     public void setAllControlsVisiblity(int topCon, int bottomCon, int startBtn,
                                         int loadingPro,
-                                        int thumbImg, int bottomPro, int retryLayout) {
+                                        int thumbImg, int bottomPro, int retryLayout,
+                                        int seekRl) {
         topContainer.setVisibility(topCon);
         bottomContainer.setVisibility(bottomCon);
-//        startButton.setVisibility(startBtn);
+        startButton.setVisibility(startBtn);
         loadingProgressBar.setVisibility(loadingPro);
         thumbImageView.setVisibility(thumbImg);
         bottomProgressBar.setVisibility(bottomPro);
         mRetryLayout.setVisibility(retryLayout);
+        findViewById(R.id.seek_rl).setVisibility(seekRl);
     }
 
     public void updateStartImage() {
@@ -860,6 +855,7 @@ public class PlatVideoStd extends Jzvd {
             post(() -> {
                 bottomContainer.setVisibility(View.INVISIBLE);
                 topContainer.setVisibility(View.INVISIBLE);
+                findViewById(R.id.seek_rl).setVisibility(GONE);
                 if (clarityPopWindow != null) {
                     clarityPopWindow.dismiss();
                 }
@@ -896,6 +892,42 @@ public class PlatVideoStd extends Jzvd {
             }
         }
     };
+
+    /**
+     * 设置快进15秒方法
+     */
+    private void forWard() {
+        if (mediaInterface != null) {
+            long currentPosition = mediaInterface.getCurrentPosition();
+            mediaInterface.seekTo(currentPosition + mSeekDate);
+        }
+    }
+
+
+    /**
+     * 设置后退15秒的方法
+     */
+    private void backWard() {
+        if (mediaInterface != null) {
+            long currentPosition = mediaInterface.getCurrentPosition();
+            if (currentPosition > mSeekDate) {
+                currentPosition -= mSeekDate;
+            } else {
+                currentPosition = 0;
+            }
+            mediaInterface.seekTo(currentPosition);
+        }
+
+    }
+
+    /**
+     * 设置快退和快进进度， 默认15s
+     *
+     * @param seekDate
+     */
+    public void setSeekDate(long seekDate) {
+        mSeekDate = seekDate;
+    }
 }
 
 
